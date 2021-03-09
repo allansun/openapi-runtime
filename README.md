@@ -6,7 +6,7 @@ Runtime library to be used with other SDK generated from OpenAPI docs.
 
 OpenAPI (formally Swagger) defines how API should be interacted with by giving 
 
- - uri
+ - API endpoint URI
  - input payload and output response (normally in JSON format)
 
 Code generators can generate valid code by parsing the OpenAPI doc.
@@ -28,11 +28,11 @@ transportation for things such as `base_uri` or authentication credentials.
 ### ResponseHandlers
 One key function this lib provides is to transform response JSON into predefined PHP objects.
 
-By calling Client::configure() you can create your own [ResponseHanderStack](/src/ResponseHandlerStack.php) , which 
-essetially a stack a transformers try to parse the response JSON.
+By calling Client::configure() you can customize your own [ResponseHanderStack](/src/ResponseHandlerStack.php) , which 
+basically is a stack of transformers to parse the response JSON.
 
 You can create your own ResponseHandler by implementing the 
-[ResponseHandlerInterface](/src/ResponseHandler/ResponseHandlerInterface.php). It is simple an invokable class 
+[ResponseHandlerInterface](/src/ResponseHandler/ResponseHandlerInterface.php). It is simply an invokable class 
 either returns a [Model](/src/ModelInterface.php) or throws an 
 [UndefinedResponseException](/src/ResponseHandler/Exception/UndefinedResponseException.php) so the 
 ResponseHandlerStack can try next handler.
@@ -41,8 +41,8 @@ By default, we provide a simple JSON response handler(
 [JsonPsrResponseHandler](/src/ResponseHandler/JsonPsrResponseHandler.php) or
 [JsonSymfonyResponseHandler](/src/ResponseHandler/JsonSymfonyResponseHandler.php)). They both will try to parse the 
 response into a model by looking into reference, which is defined in [ReponseTypes](/src/ResponseTypes.php). Be 
-aware you should set up your response references by calling ResponseTypes::setTypes(). For example please look in 
-[ClientTest](/tests/ClientTest.php)
+aware you should set up your response references by calling ResponseTypes::setTypes(). For example on how to use 
+it please look [ClientTest](/tests/ClientTest.php)
 
 ## Usage
 
