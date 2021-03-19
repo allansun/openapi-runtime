@@ -27,6 +27,7 @@ class Logger
     /**
      * This function is only intended to be used in unit test
      * You do not normally need to call it
+     * @internal
      */
     static public function reInitiate(): Logger
     {
@@ -46,9 +47,7 @@ class Logger
 
     public function debug($message, $extra = []): Logger
     {
-        if (getenv('DEBUG')) {
-            $this->logger->debug($message, $extra);
-        }
+        $this->logger->debug($message, $extra);
 
         return $this;
     }

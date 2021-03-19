@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class JsonPsrResponseHandler implements ResponseHandlerInterface
 {
-    public function __invoke($response, string $operationId): ModelInterface
+    public function __invoke($response, string $operationId)
     {
         if ($response instanceof ResponseInterface) {
             return $this->invoke($response, $operationId);
@@ -24,8 +24,16 @@ class JsonPsrResponseHandler implements ResponseHandlerInterface
         ));
     }
 
-    /** @noinspection DuplicatedCode */
-    private function invoke(ResponseInterface $response, string $operationId): ModelInterface
+    /**
+     * @param  ResponseInterface  $response
+     * @param  string             $operationId
+     *
+     * @return ModelInterface|ModelInterface[]
+     * @throws UndefinedResponseException
+     * @throws UnparsableException
+     * @noinspection DuplicatedCode
+     */
+    private function invoke(ResponseInterface $response, string $operationId)
     {
         $contents = json_decode((string)$response->getBody(), true);
 
@@ -36,8 +44,17 @@ class JsonPsrResponseHandler implements ResponseHandlerInterface
         if (array_key_exists($operationId, ResponseTypes::getTypes()) &&
             array_key_exists($response->getStatusCode() . '.', ResponseTypes::getTypes()[$operationId])) {
             $className = ResponseTypes::getTypes()[$operationId][$response->getStatusCode() . '.'];
+            if ($className != rtrim($className, '[]')) {
+                $className = rtrim($className, '[]');
+                $results   = [];
+                foreach ($contents as $content) {
+                    $results[] = new $className($content);
+                }
 
-            return new $className($contents);
+                return $results;
+            } else {
+                return new $className($contents);
+            }
         }
 
         throw new UndefinedResponseException(sprintf("Operation '%s' dose not have a defined response.", $operationId));

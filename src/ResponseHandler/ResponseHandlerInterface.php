@@ -13,8 +13,8 @@ interface ResponseHandlerInterface
      * @param          $response
      * @param  string  $operationId
      *
-     * @return ModelInterface
+     * @return ModelInterface|ModelInterface[]
      * @throws UnparsableException
      */
-    public function __invoke($response,string $operationId): ModelInterface;
+    public function __invoke($response, string $operationId);
 }

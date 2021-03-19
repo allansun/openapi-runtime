@@ -7,11 +7,15 @@ use OpenAPI\Runtime\ResponseHandler\Exception\IncompatibleResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
 use OpenAPI\Runtime\ResponseTypes;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class JsonSymfonyResponseHandler implements ResponseHandlerInterface
 {
-    public function __invoke($response, string $operationId): ModelInterface
+    public function __invoke($response, string $operationId)
     {
         if ($response instanceof ResponseInterface) {
             return $this->invoke($response, $operationId);
@@ -24,8 +28,20 @@ class JsonSymfonyResponseHandler implements ResponseHandlerInterface
         ));
     }
 
-    /** @noinspection DuplicatedCode */
-    private function invoke(ResponseInterface $response, string $operationId): ModelInterface
+    /**
+     * @param  ResponseInterface  $response
+     * @param  string             $operationId
+     *
+     * @return ModelInterface|ModelInterface[]
+     * @throws UndefinedResponseException
+     * @throws UnparsableException
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @noinspection DuplicatedCode
+     */
+    private function invoke(ResponseInterface $response, string $operationId)
     {
         $contents = json_decode((string)$response->getContent(false), true);
 
@@ -36,8 +52,17 @@ class JsonSymfonyResponseHandler implements ResponseHandlerInterface
         if (array_key_exists($operationId, ResponseTypes::getTypes()) &&
             array_key_exists($response->getStatusCode() . '.', ResponseTypes::getTypes()[$operationId])) {
             $className = ResponseTypes::getTypes()[$operationId][$response->getStatusCode() . '.'];
+            if ($className != rtrim($className, '[]')) {
+                $className = rtrim($className, '[]');
+                $results   = [];
+                foreach ($contents as $content) {
+                    $results[] = new $className($content);
+                }
 
-            return new $className($contents);
+                return $results;
+            } else {
+                return new $className($contents);
+            }
         }
 
         throw new UndefinedResponseException(sprintf("Operation '%s' dose not have a defined response.", $operationId));
