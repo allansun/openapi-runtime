@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
 use GuzzleHttp;
 use GuzzleHttp\Psr7\Request;
-use OpenApiRuntime\Exception\CommonException;
-use OpenApiRuntime\Exception\IncompatibleTransportClientException;
+use OpenAPI\Runtime\Exception\CommonException;
+use OpenAPI\Runtime\Exception\IncompatibleTransportClientException;
 use Psr\Http\Client\ClientInterface as PsrClientInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Psr\Log\LogLevel;

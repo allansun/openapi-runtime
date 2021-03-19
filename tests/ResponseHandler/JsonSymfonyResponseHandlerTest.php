@@ -1,12 +1,12 @@
 <?php
 
-namespace OpenApiRuntime\Tests\ResponseHandler;
+namespace OpenAPI\Runtime\Tests\ResponseHandler;
 
 use GuzzleHttp\Psr7\Response;
-use OpenApiRuntime\ResponseHandler\Exception\IncompatibleResponseException;
-use OpenApiRuntime\ResponseHandler\Exception\UndefinedResponseException;
-use OpenApiRuntime\ResponseHandler\Exception\UnparsableException;
-use OpenApiRuntime\ResponseHandler\JsonSymfonyResponseHandler;
+use OpenAPI\Runtime\ResponseHandler\Exception\IncompatibleResponseException;
+use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
+use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
+use OpenAPI\Runtime\ResponseHandler\JsonSymfonyResponseHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;

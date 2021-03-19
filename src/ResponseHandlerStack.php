@@ -1,9 +1,9 @@
 <?php
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
-use OpenApiRuntime\ResponseHandler\Exception\UnparsableException;
-use OpenApiRuntime\ResponseHandler\ResponseHandlerInterface;
+use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
+use OpenAPI\Runtime\ResponseHandler\ResponseHandlerInterface;
 
 class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
 {

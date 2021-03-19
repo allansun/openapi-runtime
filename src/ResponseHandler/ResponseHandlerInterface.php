@@ -1,11 +1,11 @@
 <?php
 
 
-namespace OpenApiRuntime\ResponseHandler;
+namespace OpenAPI\Runtime\ResponseHandler;
 
 
-use OpenApiRuntime\ModelInterface;
-use OpenApiRuntime\ResponseHandler\Exception\UnparsableException;
+use OpenAPI\Runtime\ModelInterface;
+use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
 
 interface ResponseHandlerInterface
 {
@@ -14,7 +14,7 @@ interface ResponseHandlerInterface
      * @param  string  $operationId
      *
      * @return ModelInterface
-     * @throws \OpenApiRuntime\ResponseHandler\Exception\UnparsableException
+     * @throws UnparsableException
      */
     public function __invoke($response,string $operationId): ModelInterface;
 }

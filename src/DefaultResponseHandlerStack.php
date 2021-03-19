@@ -1,14 +1,15 @@
 <?php
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
-use OpenApiRuntime\ResponseHandler\JsonPsrResponseHandler;
+use OpenAPI\Runtime\ResponseHandler\JsonPsrResponseHandler;
 
 final class DefaultResponseHandlerStack extends ResponseHandlerStack
 {
 
     public function __construct()
     {
+        parent::__construct([]);
         $this->add(new JsonPsrResponseHandler());
     }
 }

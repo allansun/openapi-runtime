@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OpenApiRuntime\Tests\Fixtures;
+namespace OpenAPI\Runtime\Tests\Fixtures;
 
 
 class TestObject

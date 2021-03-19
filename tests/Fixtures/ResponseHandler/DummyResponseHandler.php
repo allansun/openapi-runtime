@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenApiRuntime\Tests\Fixtures\ResponseHandler;
+namespace OpenAPI\Runtime\Tests\Fixtures\ResponseHandler;
 
-use OpenApiRuntime\ModelInterface;
-use OpenApiRuntime\ResponseHandler\ResponseHandlerInterface;
-use OpenApiRuntime\Tests\Fixtures\TestModel;
+use OpenAPI\Runtime\ModelInterface;
+use OpenAPI\Runtime\ResponseHandler\ResponseHandlerInterface;
+use OpenAPI\Runtime\Tests\Fixtures\TestModel;
 
 class DummyResponseHandler implements ResponseHandlerInterface
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace OpenApiRuntime\Tests;
+namespace OpenAPI\Runtime\Tests;
 
-use OpenApiRuntime\Tests\Fixtures\AnotherTestModel;
-use OpenApiRuntime\Tests\Fixtures\TestModel;
-use OpenApiRuntime\Tests\Fixtures\TestObject;
-use OpenApiRuntime\Tests\Fixtures\TestRawModel;
+use OpenAPI\Runtime\Tests\Fixtures\AnotherTestModel;
+use OpenAPI\Runtime\Tests\Fixtures\TestModel;
+use OpenAPI\Runtime\Tests\Fixtures\TestObject;
+use OpenAPI\Runtime\Tests\Fixtures\TestRawModel;
 use PHPUnit\Framework\TestCase;
 
 class AbstractModelTest extends TestCase

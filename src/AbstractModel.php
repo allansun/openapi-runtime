@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;

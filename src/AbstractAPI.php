@@ -8,15 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
-
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractAPI
 {
     protected Client $client;
+
     public function __construct()
     {
         $this->client = Client::getInstance();

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenApiRuntime\ResponseHandler\Exception;
+namespace OpenAPI\Runtime\ResponseHandler\Exception;
 
 class UndefinedResponseException extends UnparsableException
 {}

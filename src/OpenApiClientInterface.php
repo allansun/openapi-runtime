@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
 
 interface OpenApiClientInterface

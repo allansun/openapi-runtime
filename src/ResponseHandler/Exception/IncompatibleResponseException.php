@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenApiRuntime\ResponseHandler\Exception;
+namespace OpenAPI\Runtime\ResponseHandler\Exception;
 
-use OpenApiRuntime\Exception\AbstractException;
+use OpenAPI\Runtime\Exception\AbstractException;
 
 class IncompatibleResponseException extends AbstractException
 {

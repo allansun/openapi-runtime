@@ -1,10 +1,10 @@
 <?php
 
-namespace OpenApiRuntime\Tests\Fixtures\ResponseHandler;
+namespace OpenAPI\Runtime\Tests\Fixtures\ResponseHandler;
 
-use OpenApiRuntime\ModelInterface;
-use OpenApiRuntime\ResponseHandler\Exception\UndefinedResponseException;
-use OpenApiRuntime\ResponseHandler\ResponseHandlerInterface;
+use OpenAPI\Runtime\ModelInterface;
+use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
+use OpenAPI\Runtime\ResponseHandler\ResponseHandlerInterface;
 
 class InvalidResponseHandler implements ResponseHandlerInterface
 {

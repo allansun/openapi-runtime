@@ -1,14 +1,14 @@
 <?php
 
-namespace OpenApiRuntime\Tests;
+namespace OpenAPI\Runtime\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use OpenApiRuntime\ResponseHandler\Exception\UndefinedResponseException;
-use OpenApiRuntime\ResponseHandlerStack;
-use OpenApiRuntime\ResponseTypes;
-use OpenApiRuntime\Tests\Fixtures\ResponseHandler\DummyResponseHandler;
-use OpenApiRuntime\Tests\Fixtures\ResponseHandler\InvalidResponseHandler;
-use OpenApiRuntime\Tests\Fixtures\TestModel;
+use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
+use OpenAPI\Runtime\ResponseHandlerStack;
+use OpenAPI\Runtime\ResponseTypes;
+use OpenAPI\Runtime\Tests\Fixtures\ResponseHandler\DummyResponseHandler;
+use OpenAPI\Runtime\Tests\Fixtures\ResponseHandler\InvalidResponseHandler;
+use OpenAPI\Runtime\Tests\Fixtures\TestModel;
 use PHPUnit\Framework\TestCase;
 
 class ResponseHandlerStackTest extends TestCase

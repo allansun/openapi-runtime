@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
 
-use OpenApiRuntime\Exception\CommonException;
-use OpenApiRuntime\Exception\InvalidParameterException;
+use OpenAPI\Runtime\Exception\CommonException;
+use OpenAPI\Runtime\Exception\InvalidParameterException;
 
 /**
  * Class Authentication

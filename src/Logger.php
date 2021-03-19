@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenApiRuntime;
+namespace OpenAPI\Runtime;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

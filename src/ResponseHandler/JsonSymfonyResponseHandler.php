@@ -1,12 +1,12 @@
 <?php
 
-namespace OpenApiRuntime\ResponseHandler;
+namespace OpenAPI\Runtime\ResponseHandler;
 
-use OpenApiRuntime\ModelInterface;
-use OpenApiRuntime\ResponseHandler\Exception\IncompatibleResponseException;
-use OpenApiRuntime\ResponseHandler\Exception\UndefinedResponseException;
-use OpenApiRuntime\ResponseHandler\Exception\UnparsableException;
-use OpenApiRuntime\ResponseTypes;
+use OpenAPI\Runtime\ModelInterface;
+use OpenAPI\Runtime\ResponseHandler\Exception\IncompatibleResponseException;
+use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
+use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
+use OpenAPI\Runtime\ResponseTypes;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class JsonSymfonyResponseHandler implements ResponseHandlerInterface

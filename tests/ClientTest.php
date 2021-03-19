@@ -1,15 +1,15 @@
 <?php /** @noinspection PhpUndefinedMethodInspection */
 
-namespace OpenApiRuntime\Tests;
+namespace OpenAPI\Runtime\Tests;
 
 use GuzzleHttp;
-use OpenApiRuntime\Client;
-use OpenApiRuntime\Exception\CommonException;
-use OpenApiRuntime\Exception\IncompatibleTransportClientException;
-use OpenApiRuntime\ResponseHandler\JsonSymfonyResponseHandler;
-use OpenApiRuntime\ResponseHandlerStack;
-use OpenApiRuntime\ResponseTypes;
-use OpenApiRuntime\Tests\Fixtures\TestModel;
+use OpenAPI\Runtime\Client;
+use OpenAPI\Runtime\Exception\CommonException;
+use OpenAPI\Runtime\Exception\IncompatibleTransportClientException;
+use OpenAPI\Runtime\ResponseHandler\JsonSymfonyResponseHandler;
+use OpenAPI\Runtime\ResponseHandlerStack;
+use OpenAPI\Runtime\ResponseTypes;
+use OpenAPI\Runtime\Tests\Fixtures\TestModel;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace OpenApiRuntime\Tests\Fixtures;
+namespace OpenAPI\Runtime\Tests\Fixtures;
 
 
-use OpenApiRuntime\AbstractModel;
+use OpenAPI\Runtime\AbstractModel;
 
 class TestModel extends AbstractModel
 {
