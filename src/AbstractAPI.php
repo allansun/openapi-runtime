@@ -13,10 +13,14 @@ namespace OpenAPI\Runtime;
 
 abstract class AbstractAPI
 {
-    protected Client $client;
+    protected OpenApiClientInterface $client;
 
-    public function __construct()
+    public function __construct(?OpenApiClientInterface $client = null)
     {
-        $this->client = Client::getInstance();
+        if (null == $client) {
+            $this->client = Client::getInstance();
+        } else {
+            $this->client = $client;
+        }
     }
 }
