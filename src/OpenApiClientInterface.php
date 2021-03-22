@@ -12,7 +12,7 @@ interface OpenApiClientInterface
      * @param  string  $uri
      * @param  array   $options
      *
-     * @return ModelInterface|ModelInterface[]
+     * @return ModelInterface|ModelInterface[]|mixed
      */
     public function request(string $operationId, string $method, string $uri, array $options = []);
 
