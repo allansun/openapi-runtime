@@ -2,7 +2,7 @@
 
 namespace OpenAPI\Runtime;
 
-class ResponseTypes
+class ResponseTypes implements ResponseTypesInterface
 {
     private static array $types = [];
 
@@ -15,7 +15,5 @@ class ResponseTypes
     {
         self::$types = $types;
     }
-
-
 }
 
