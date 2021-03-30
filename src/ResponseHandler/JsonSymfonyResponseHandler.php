@@ -80,8 +80,10 @@ class JsonSymfonyResponseHandler implements ResponseHandlerInterface, ResponseTy
         return self::$responseTypes;
     }
 
-    static public function setResponseTypes(ResponseTypesInterface $responseTypes)
+    static public function setResponseTypes(ResponseTypesInterface $responseTypes): self
     {
         self::$responseTypes = $responseTypes;
+
+        return new self();
     }
 }
