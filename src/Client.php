@@ -99,8 +99,10 @@ class Client implements OpenApiClientInterface
         $client = null,
         ?ResponseHandlerStackInterface $responseHandlerStack = null,
         array $defaultOptions = []
-    ) {
+    ): Client {
         self::$instance = new self($client, $responseHandlerStack, $defaultOptions);
+
+        return self::$instance;
     }
 
     public static function getInstance(): Client
