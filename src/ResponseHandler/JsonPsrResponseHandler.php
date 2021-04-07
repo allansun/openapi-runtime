@@ -7,10 +7,13 @@ use OpenAPI\Runtime\ResponseHandler\Exception\IncompatibleResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
 use OpenAPI\Runtime\ResponseTypes;
+use OpenAPI\Runtime\ResponseTypesInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class JsonPsrResponseHandler implements ResponseHandlerInterface
+class JsonPsrResponseHandler implements ResponseHandlerInterface, ResponseTypesInjecableInterface
 {
+    private static ResponseTypesInterface $responseTypes;
+
     public function __invoke($response, string $operationId)
     {
         if ($response instanceof ResponseInterface) {
@@ -41,9 +44,9 @@ class JsonPsrResponseHandler implements ResponseHandlerInterface
             throw new UnparsableException('Response is not a valid Json');
         }
 
-        if (array_key_exists($operationId, ResponseTypes::getTypes()) &&
-            array_key_exists($response->getStatusCode() . '.', ResponseTypes::getTypes()[$operationId])) {
-            $className = ResponseTypes::getTypes()[$operationId][$response->getStatusCode() . '.'];
+        if (array_key_exists($operationId, $this->getResponseTypes()::getTypes()) &&
+            array_key_exists($response->getStatusCode() . '.', $this->getResponseTypes()::getTypes()[$operationId])) {
+            $className = $this->getResponseTypes()::getTypes()[$operationId][$response->getStatusCode() . '.'];
             if ($className != rtrim($className, '[]')) {
                 $className = rtrim($className, '[]');
                 $results   = [];
@@ -58,5 +61,21 @@ class JsonPsrResponseHandler implements ResponseHandlerInterface
         }
 
         throw new UndefinedResponseException(sprintf("Operation '%s' dose not have a defined response.", $operationId));
+    }
+
+    public function getResponseTypes(): ResponseTypesInterface
+    {
+        if (empty(self::$responseTypes)) {
+            self::$responseTypes = new ResponseTypes();
+        }
+
+        return self::$responseTypes;
+    }
+
+    static public function setResponseTypes(ResponseTypesInterface $responseTypes): self
+    {
+        self::$responseTypes = $responseTypes;
+
+        return new self();
     }
 }

@@ -69,6 +69,12 @@ class JsonPsrResponseHandlerTest extends TestCase
         $handler(new MockResponse(), 'test');
     }
 
+    public function testSetResponseTypes(){
+        $handler =  JsonPsrResponseHandler::setResponseTypes(new ResponseTypes());
+        $this->assertIsCallable($handler);
+        $this->assertInstanceOf(ResponseTypes::class,$handler->getResponseTypes());
+    }
+
     protected function setUp(): void
     {
         // reset ResponseTypes
