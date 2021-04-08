@@ -11,6 +11,7 @@
 namespace OpenAPI\Runtime;
 
 use GuzzleHttp;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Psr7\Request;
 use OpenAPI\Runtime\Exception\CommonException;
 use OpenAPI\Runtime\Exception\IncompatibleTransportClientException;
@@ -150,7 +151,11 @@ class Client implements OpenApiClientInterface
 
         $request = new Request($method, $uri, $headers, $body, $protocalVersion);
 
-        return $this->client->sendRequest($request);
+        if ($this->client instanceof GuzzleClientInterface) {
+            return $this->client->send($request, $options);
+        } else {
+            return $this->client->sendRequest($request);
+        }
     }
 
     private function symfonyRequest($method, $uri, array $options = []): SymfonyResponseInterface
