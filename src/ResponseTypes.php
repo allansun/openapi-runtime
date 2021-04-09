@@ -4,7 +4,10 @@ namespace OpenAPI\Runtime;
 
 class ResponseTypes implements ResponseTypesInterface
 {
-    protected static array $types = [];
+    /**
+     * @var array
+     */
+    protected static $types = [];
 
     public static function getTypes(): array
     {
