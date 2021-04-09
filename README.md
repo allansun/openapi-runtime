@@ -1,5 +1,11 @@
 # OpenAPI Client Runtime
 
+[![Latest Stable Version](https://poser.pugx.org/allansun/openapi-runtime/v)](https:://packagist.org/packages/allansun/openapi-runtime)
+[![Total Downloads](https://poser.pugx.org/allansun/openapi-runtime/downloads)](https:://packagist.org/packages/allansun/openapi-runtime)
+[![License](https://poser.pugx.org/allansun/openapi-runtime/license)](https:://packagist.org/packages/allansun/openapi-runtime)
+[![codecov](https://codecov.io/gh/allansun/openapi-runtime/branch/master/graph/badge.svg?token=OVYRXPSW2Y)](https://codecov.io/gh/allansun/openapi-runtime)
+
+
 Runtime library to be used with other SDK generated from OpenAPI docs.
 
 ## Basic concepts
@@ -108,3 +114,4 @@ class Customer extends AbstractAPI{
 ## Projects using this lib
 
 - [kubernetes/php-client](https://packagist.org/packages/kubernetes/php-client)
+- [allansun/openapi-code-generator](https://github.com/allansun/openapi-code-generator)
