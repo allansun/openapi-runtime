@@ -101,13 +101,15 @@ abstract class AbstractModel implements ModelInterface
         } else {
             $properties = self::$PropertyInfoExtractor->getProperties(get_class($this));
             foreach ($properties as $property) {
-                $propertyValue = $this->getProperty($this->$property);
-                if (property_exists($this, $property) && null !== $propertyValue) {
-                    $propertyName = $property;
-                    if (0 === strpos($propertyName, '_')) {
-                        $propertyName = str_replace('_', '$', $propertyName);
+                if (property_exists($this, $property)) {
+                    $propertyValue = $this->getProperty($this->$property);
+                    if (null !== $propertyValue) {
+                        $propertyName = $property;
+                        if (0 === strpos($propertyName, '_')) {
+                            $propertyName = str_replace('_', '$', $propertyName);
+                        }
+                        $arrayCopy[$propertyName] = $propertyValue;
                     }
-                    $arrayCopy[$propertyName] = $propertyValue;
                 }
             }
         }
@@ -187,8 +189,8 @@ abstract class AbstractModel implements ModelInterface
     }
 
     /**
-     * @param $object
-     * @param $index
+     * @param  ModelInterface  $object
+     * @param                  $index
      *
      * @return Type[]|null
      */

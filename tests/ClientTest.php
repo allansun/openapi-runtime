@@ -56,7 +56,7 @@ class ClientTest extends TestCase
         $response = new GuzzleHttp\Psr7\Response(200, [], json_encode(['_underscoredName' => 'abc']));
 
         $client = $this->prophesize(GuzzleHttp\Client::class);
-        $client->sendRequest(Argument::any(), Argument::any(), Argument::any())->willReturn($response);
+        $client->send(Argument::any(), Argument::any())->willReturn($response);
 
         Client::configure($client->reveal());
 
@@ -72,7 +72,7 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(TestModel::class, $response);
         $this->assertEquals('abc', $response->_underscoredName);
 
-        $client->sendRequest(Argument::any(), Argument::any(), Argument::any())->shouldHaveBeenCalled();
+        $client->send(Argument::any(), Argument::any())->shouldHaveBeenCalled();
     }
 
     public function testRequestWithSymfonyClient()
