@@ -24,7 +24,7 @@ class ClientTest extends TestCase
         Client::configure(new SymfonyClient\MockHttpClient());
         $this->assertInstanceOf(Client::class, Client::getInstance());
 
-        Client::configure(null, null, ['foo' => 'bar']);
+        Client::configure(new SymfonyClient\MockHttpClient(), null, ['foo' => 'bar']);
         $this->assertEquals('bar', Client::getInstance()->getDefaultOptions()['foo']);
     }
 
@@ -41,7 +41,7 @@ class ClientTest extends TestCase
      */
     public function testGetInstance()
     {
-        Client::configure();
+        Client::configure(new SymfonyClient\MockHttpClient());
         $this->assertInstanceOf(Client::class, Client::getInstance());
     }
 
@@ -107,7 +107,7 @@ class ClientTest extends TestCase
      */
     public function testSetDefaultOption()
     {
-        Client::configure();
+        Client::configure(new SymfonyClient\MockHttpClient());
         $instance = Client::getInstance();
         $instance->setDefaultOption(['a' => 'a']);
         $instance->setDefaultOption('b', 'b');
@@ -117,7 +117,6 @@ class ClientTest extends TestCase
         $this->assertEquals('a', $defaultOptions['a']);
         $this->assertEquals('b', 'b');
     }
-
 
     public function testUninitializedInstance()
     {

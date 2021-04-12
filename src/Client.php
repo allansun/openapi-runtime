@@ -10,19 +10,22 @@
 
 namespace OpenAPI\Runtime;
 
-use GuzzleHttp;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Psr7\Request;
 use OpenAPI\Runtime\Exception\CommonException;
 use OpenAPI\Runtime\Exception\IncompatibleTransportClientException;
 use Psr\Http\Client\ClientInterface as PsrClientInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
-use Psr\Log\LogLevel;
 use Symfony\Contracts\HttpClient\HttpClientInterface as SymfonyHttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface as SymfonyResponseInterface;
 
 class Client implements OpenApiClientInterface
 {
+    public const HEADERS = 'headers';
+    public const BODY = 'body';
+    public const PROTOCAL_VERSION = 'version';
+    public const JSON = 'json';
+
     static private ?Client $instance;
     /**
      * @var PsrClientInterface|SymfonyHttpClientInterface
@@ -39,21 +42,16 @@ class Client implements OpenApiClientInterface
      * @param  array                                               $defaultOptions
      */
     private function __construct(
-        $client = null,
+        $client,
         ?ResponseHandlerStackInterface $responseHandlerStack = null,
         array $defaultOptions = []
     ) {
         $this->defaultOptions = $defaultOptions;
 
-        if ($client) {
-            if (!($client instanceof SymfonyHttpClientInterface) && !($client instanceof PsrClientInterface)) {
-                throw new IncompatibleTransportClientException();
-            }
-            $this->client = $client;
-        } else {
-            // Create a default client
-            $this->client = $this->getDefaultClient();
+        if (!($client instanceof SymfonyHttpClientInterface) && !($client instanceof PsrClientInterface)) {
+            throw new IncompatibleTransportClientException();
         }
+        $this->client = $client;
 
         $this->setResponseHandlerStack(
             $this->responseHandlerStack ??
@@ -61,32 +59,6 @@ class Client implements OpenApiClientInterface
             new DefaultResponseHandlerStack()
         );
 
-    }
-
-    private function getDefaultClient(): GuzzleHttp\Client
-    {
-        $HandlerStack = $this->defaultOptions['handler'] ?? GuzzleHttp\HandlerStack::create();
-
-        // Setup logging bit
-        $HandlerStack->push(
-            GuzzleHttp\Middleware::log(
-                Logger::getInstance()->getLogger(),
-                new GuzzleHttp\MessageFormatter('{method} Response: {res_body}'),
-                LogLevel::DEBUG
-            )
-        );
-
-        $HandlerStack->push(
-            GuzzleHttp\Middleware::log(
-                Logger::getInstance()->getLogger(),
-                new GuzzleHttp\MessageFormatter('{method} : {uri} - Request: {req_body}'),
-                LogLevel::DEBUG
-            )
-        );
-
-        $this->defaultOptions['handler'] = $HandlerStack;
-
-        return new GuzzleHttp\Client($this->defaultOptions);
     }
 
     public function setResponseHandlerStack(ResponseHandlerStackInterface $responseHandlerStack): self
@@ -138,15 +110,12 @@ class Client implements OpenApiClientInterface
     {
         $options = array_merge($this->defaultOptions, $options);
 
-        $headers         = key_exists(GuzzleHttp\RequestOptions::HEADERS, $options)
-            ? $options[GuzzleHttp\RequestOptions::HEADERS] : [];
-        $body            = key_exists(GuzzleHttp\RequestOptions::BODY, $options)
-            ? $options[GuzzleHttp\RequestOptions::BODY] : null;
-        $protocalVersion = key_exists(GuzzleHttp\RequestOptions::VERSION, $options)
-            ? $options[GuzzleHttp\RequestOptions::VERSION] : '1.1';
+        $headers         = key_exists(static::HEADERS, $options) ? $options[static::HEADERS] : [];
+        $body            = key_exists(static::BODY, $options) ? $options[static::BODY] : null;
+        $protocalVersion = key_exists(static::PROTOCAL_VERSION, $options) ? $options[static::BODY] : '1.1';
 
-        if (isset($options['json'])) {
-            $body = \json_encode($options['json']);
+        if (isset($options[static::JSON])) {
+            $body = \json_encode($options[static::JSON]);
         }
 
         $request = new Request($method, $uri, $headers, $body, $protocalVersion);

@@ -10,7 +10,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     /**
      * @var ResponseHandlerInterface[]
      */
-    private iterable $stack = [];
+    private iterable $stack;
 
     /**
      * ResponseHandlerStack constructor.
@@ -37,7 +37,14 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         $this->stack[$priority] = $callable;
     }
 
-    public function handle($response, string $operationId): ModelInterface
+    /**
+     * @param          $response
+     * @param  string  $operationId
+     *
+     * @return ModelInterface|ModelInterface[]|null
+     * @throws UnparsableException
+     */
+    public function handle($response, string $operationId)
     {
         $result = null;
 
@@ -85,7 +92,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     {
         $key = key($this->stack);
 
-        return ($key !== null && $key !== false);
+        return $key !== null;
     }
 
     public function remove(string $handlerClass): bool
