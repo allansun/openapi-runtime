@@ -8,6 +8,27 @@
 
 Runtime library to be used with other SDK generated from OpenAPI docs.
 
+## Installation
+
+```shell
+composer require allansun/openapi-runtime
+```
+
+You will also need a [PSR-7 based client](https://www.php-fig.org/psr/psr-7/)
+or [Symfony's HTTP Foundation based client](https://symfony.com/doc/current/http_client.html)
+
+So either use Guzzle (or any other PSR-7 compatible clients)
+
+```shell
+composer require guzzlehttp/guzzle
+```
+
+**or** Symfony HTTP Client
+
+```shell
+composer require symfony/http-client
+```
+
 ## Basic concepts
 
 OpenAPI (formally Swagger) defines how API should be interacted with by giving
@@ -27,9 +48,6 @@ At the moment we support [PSR-7 based client](https://www.php-fig.org/psr/psr-7/
 and [Symfony's HTTP Foundation based clients](https://symfony.com/doc/current/http_client.html).
 
 To use the `Client` you first need to use Client::configure() method to define the transportation client of your choice.
-You can call Client::configure() without any parameters to create a default
-[GuzzleClient](https://docs.guzzlephp.org/en/stable/psr7.html), however it is strongly advised to configure your own
-transportation for things such as `base_uri` or authentication credentials.
 
 ### ResponseHandlers
 
@@ -113,5 +131,6 @@ class Customer extends AbstractAPI{
 
 ## Projects using this lib
 
-- [kubernetes/php-client](https://packagist.org/packages/kubernetes/php-client)
 - [allansun/openapi-code-generator](https://github.com/allansun/openapi-code-generator)
+- [bricre/royalmail-tracking-v2-sdk](https://gihub.com/bricre/royalmail-tracking-v2-sdk)
+- [kubernetes/php-client](https://packagist.org/packages/kubernetes/php-client)
