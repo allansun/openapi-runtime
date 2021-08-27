@@ -10,14 +10,14 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     /**
      * @var ResponseHandlerInterface[]
      */
-    private iterable $handlers = [];
+    private $handlers;
 
     /**
      * ResponseHandlerStack constructor.
      *
-     * @param  iterable|ResponseHandlerInterface[]  $handlers
+     * @param  ResponseHandlerInterface[]  $handlers
      */
-    public function __construct($handlers = [])
+    public function __construct(array $handlers = [])
     {
         $this->handlers = $handlers;
     }

@@ -26,13 +26,22 @@ class Client implements OpenApiClientInterface
     public const PROTOCAL_VERSION = 'version';
     public const JSON = 'json';
 
-    static private ?Client $instance;
+    /**
+     * @var Client
+     */
+    static private $instance;
     /**
      * @var PsrClientInterface|SymfonyHttpClientInterface
      */
     private $client;
-    private array $defaultOptions;
-    private ResponseHandlerStackInterface $responseHandlerStack;
+    /**
+     * @var array
+     */
+    private $defaultOptions;
+    /**
+     * @var ResponseHandlerStackInterface
+     */
+    private $responseHandlerStack;
 
     /**
      * Client constructor.
@@ -78,7 +87,7 @@ class Client implements OpenApiClientInterface
         return self::$instance;
     }
 
-    public static function getInstance(): Client
+    public static function getInstance(): OpenApiClientInterface
     {
         if (isset(self::$instance)) {
             return self::$instance;

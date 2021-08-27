@@ -13,7 +13,10 @@ namespace OpenAPI\Runtime;
 
 abstract class AbstractAPI
 {
-    protected OpenApiClientInterface $client;
+    /**
+     * @var OpenApiClientInterface
+     */
+    protected $client;
 
     public function __construct(?OpenApiClientInterface $client = null)
     {

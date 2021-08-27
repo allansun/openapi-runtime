@@ -8,40 +8,40 @@ use OpenAPI\Runtime\AbstractModel;
 
 class TestModel extends AbstractModel
 {
-    public string $namespace = 'test-namespace';
+    public $namespace = 'test-namespace';
 
     /**
      * @var TestRawModel|null
      */
-    public ?TestRawModel $status = null;
+    public $status = null;
 
     /**
      * @var AnotherTestModel[]
      */
-    public array $metadata = [];
+    public $metadata = [];
 
     /**
      * @var TestRawModel[]
      */
-    public array $rawModels = [];
+    public $rawModels = [];
 
     /**
      * @var AnotherTestModel|null
      */
-    public ?AnotherTestModel $testModel = null;
+    public $testModel = null;
 
     /**
      * @var TestObject|null
      */
-    public ?TestObject $testObject = null;
+    public $testObject = null;
 
     /**
      * @var TestObject[]
      */
-    public array $testObjects = [];
+    public $testObjects = [];
 
     /**
      * @var string
      */
-    public string $_underscoredName = 'test';
+    public $_underscoredName = 'test';
 }

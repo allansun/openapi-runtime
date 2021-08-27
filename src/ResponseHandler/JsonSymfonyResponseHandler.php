@@ -16,7 +16,10 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class JsonSymfonyResponseHandler implements ResponseHandlerInterface, ResponseTypesInjecableInterface
 {
-    private ResponseTypesInterface $responseTypes;
+    /**
+     * @var ResponseTypesInterface
+     */
+    private $responseTypes;
 
     public function __invoke($response, string $operationId)
     {
@@ -46,7 +49,7 @@ class JsonSymfonyResponseHandler implements ResponseHandlerInterface, ResponseTy
      */
     private function invoke(ResponseInterface $response, string $operationId)
     {
-        $contents = json_decode((string)$response->getContent(false), true);
+        $contents = json_decode($response->getContent(false), true);
 
         if (!is_array($contents)) {
             throw new UnparsableException('Response is not a valid Json');
@@ -80,7 +83,7 @@ class JsonSymfonyResponseHandler implements ResponseHandlerInterface, ResponseTy
         return $this->responseTypes;
     }
 
-    public function setResponseTypes(ResponseTypesInterface $responseTypes): self
+    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseTypesInjecableInterface
     {
         $this->responseTypes = $responseTypes;
 

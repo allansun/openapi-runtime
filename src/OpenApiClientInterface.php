@@ -7,6 +7,11 @@ namespace OpenAPI\Runtime;
 interface OpenApiClientInterface
 {
     /**
+     * @return OpenApiClientInterface
+     */
+    public static function getInstance(): OpenApiClientInterface;
+
+    /**
      * @param  string  $operationId
      * @param  string  $method
      * @param  string  $uri
@@ -15,6 +20,4 @@ interface OpenApiClientInterface
      * @return ModelInterface|ModelInterface[]|mixed
      */
     public function request(string $operationId, string $method, string $uri, array $options = []);
-
-    public static function getInstance(): OpenApiClientInterface;
 }

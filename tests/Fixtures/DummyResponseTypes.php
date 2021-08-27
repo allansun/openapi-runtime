@@ -6,5 +6,5 @@ use OpenAPI\Runtime\ResponseTypes;
 
 class DummyResponseTypes extends ResponseTypes
 {
-    public static array $types = ['a' => 'b'];
+    public static $types = ['a' => 'b'];
 }

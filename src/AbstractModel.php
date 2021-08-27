@@ -25,17 +25,17 @@ abstract class AbstractModel implements ModelInterface
     /**
      * @var PropertyInfoExtractor|null
      */
-    protected static ?PropertyInfoExtractor $PropertyInfoExtractor;
+    protected static $PropertyInfoExtractor;
     /**
      * @var array Cache for reflection results
      */
-    protected static array $reflectionCache = [];
+    protected static $reflectionCache = [];
     /**
      * TRUE means this object is a simple object contains one basic value, such as intger, string, datetime
      *
      * @var boolean
      */
-    protected bool $isRawObject = false;
+    protected $isRawObject = false;
     /**
      * @var mixed
      */

@@ -8,6 +8,5 @@ use OpenAPI\Runtime\AbstractModel;
 
 class TestRawModel extends AbstractModel
 {
-    protected bool $isRawObject = true;
-
+    protected $isRawObject = true;
 }

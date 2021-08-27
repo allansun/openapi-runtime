@@ -8,7 +8,15 @@ use OpenAPI\Runtime\ResponseTypesInterface;
 
 interface ResponseTypesInjecableInterface
 {
-    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseHandlerInterface;
+    /**
+     * @param  ResponseTypesInterface  $responseTypes
+     *
+     * @return self
+     */
+    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseTypesInjecableInterface;
 
+    /**
+     * @return ResponseTypesInterface
+     */
     public function getResponseTypes(): ResponseTypesInterface;
 }
