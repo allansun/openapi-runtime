@@ -56,7 +56,7 @@ class Client implements OpenApiClientInterface
         $this->setResponseHandlerStack(
             $this->responseHandlerStack ??
             $responseHandlerStack ??
-            new DefaultResponseHandlerStack()
+            new SimplePsrResponseHandlerStack()
         );
 
     }

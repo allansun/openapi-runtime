@@ -10,31 +10,31 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     /**
      * @var ResponseHandlerInterface[]
      */
-    private iterable $stack;
+    private iterable $handlers = [];
 
     /**
      * ResponseHandlerStack constructor.
      *
-     * @param  iterable|ResponseHandlerInterface[]  $stack
+     * @param  iterable|ResponseHandlerInterface[]  $handlers
      */
-    public function __construct($stack = [])
+    public function __construct($handlers = [])
     {
-        $this->stack = $stack;
+        $this->handlers = $handlers;
     }
 
 
     public function add(ResponseHandlerInterface $callable, ?int $priority = null): void
     {
-        if (null !== $priority && key_exists($priority, $this->stack)) {
+        if (null !== $priority && key_exists($priority, $this->handlers)) {
             throw new \InvalidArgumentException(sprintf(
                 'Priority of %s has already been used by handler %s',
                 $priority,
-                get_class($this->stack[$priority])
+                get_class($this->handlers[$priority])
             ));
         }
-        $priority = $priority ?? count($this->stack);
+        $priority = $priority ?? count($this->handlers);
 
-        $this->stack[$priority] = $callable;
+        $this->handlers[$priority] = $callable;
     }
 
     /**
@@ -67,17 +67,17 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
      */
     public function current()
     {
-        return current($this->stack);
+        return current($this->handlers);
     }
 
     public function key()
     {
-        return key($this->stack);
+        return key($this->handlers);
     }
 
     public function next(): bool
     {
-        return next($this->stack);
+        return next($this->handlers);
     }
 
     /**
@@ -85,12 +85,12 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
      */
     public function rewind()
     {
-        return reset($this->stack);
+        return reset($this->handlers);
     }
 
     public function valid(): bool
     {
-        $key = key($this->stack);
+        $key = key($this->handlers);
 
         return $key !== null;
     }
@@ -99,7 +99,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     {
         while ($handler = $this->current()) {
             if ($handlerClass === get_class($handler)) {
-                unset($this->stack[$this->key()]);
+                unset($this->handlers[$this->key()]);
 
                 return true;
             }

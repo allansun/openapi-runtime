@@ -80,7 +80,7 @@ namespace App;
 use OpenAPI\Runtime\ResponseTypes;
 
 ResponseTypes::setTypes([
-    'operation_id' =>[ // This is should be unique to $ref as defined in the OpenAPI doc
+    'operation_id' =>[ // This should be unique to $ref as defined in the OpenAPI doc
         '200.' => 'YourGeneratedModelClass::class', // We add a dot after there HTTP status code to enforce string tyep
         '404.' => 'ErrorModel::class'
     ]
@@ -94,13 +94,14 @@ Next you need to configure the transportation client and respones handerls
 namespace App;
 
 use OpenAPI\Runtime\Client;
-use OpenAPI\Runtime\DefaultResponseHandlerStack;
+use OpenAPI\Runtime\ResponseTypes;
+use OpenAPI\Runtime\SimplePsrResponseHandlerStack;
 
 Client::configure(
     new \GuzzleHttp\Client([
         'base_uri' => 'https://pastebin.com/'
     ]),
-    new DefaultResponseHandlerStack(),
+    new SimplePsrResponseHandlerStack(new ResponseTypes()),
     [] // Put some extra default options here
 );
 ```

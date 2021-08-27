@@ -7,7 +7,7 @@ class ResponseTypes implements ResponseTypesInterface
     /**
      * @var array
      */
-    protected static $types = [];
+    protected static array $types = [];
 
     public static function getTypes(): array
     {

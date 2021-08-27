@@ -9,6 +9,7 @@ use OpenAPI\Runtime\Exception\IncompatibleTransportClientException;
 use OpenAPI\Runtime\ResponseHandler\JsonSymfonyResponseHandler;
 use OpenAPI\Runtime\ResponseHandlerStack;
 use OpenAPI\Runtime\ResponseTypes;
+use OpenAPI\Runtime\SimplePsrResponseHandlerStack;
 use OpenAPI\Runtime\Tests\Fixtures\TestModel;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -58,7 +59,7 @@ class ClientTest extends TestCase
         $client = $this->prophesize(GuzzleHttp\Client::class);
         $client->send(Argument::any(), Argument::any())->willReturn($response);
 
-        Client::configure($client->reveal());
+        Client::configure($client->reveal(), new SimplePsrResponseHandlerStack());
 
         $instance = Client::getInstance();
 
