@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class JsonPsrResponseHandler implements ResponseHandlerInterface, ResponseTypesInjecableInterface
 {
-    private static ResponseTypesInterface $responseTypes;
+    private ResponseTypesInterface $responseTypes;
 
     public function __invoke($response, string $operationId)
     {
@@ -65,17 +65,17 @@ class JsonPsrResponseHandler implements ResponseHandlerInterface, ResponseTypesI
 
     public function getResponseTypes(): ResponseTypesInterface
     {
-        if (empty(self::$responseTypes)) {
-            self::$responseTypes = new ResponseTypes();
+        if (empty($this->responseTypes)) {
+            $this->responseTypes = new ResponseTypes();
         }
 
-        return self::$responseTypes;
+        return $this->responseTypes;
     }
 
-    static public function setResponseTypes(ResponseTypesInterface $responseTypes): self
+    public function setResponseTypes(ResponseTypesInterface $responseTypes): self
     {
-        self::$responseTypes = $responseTypes;
+        $this->responseTypes = $responseTypes;
 
-        return new self();
+        return $this;
     }
 }

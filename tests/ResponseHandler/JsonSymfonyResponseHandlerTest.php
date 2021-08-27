@@ -79,7 +79,8 @@ class JsonSymfonyResponseHandlerTest extends TestCase
     }
 
     public function testSetResponseTypes(){
-        $handler =  JsonSymfonyResponseHandler::setResponseTypes(new ResponseTypes());
+        $handler = new JsonSymfonyResponseHandler();
+        $handler->setResponseTypes(new ResponseTypes());
         $this->assertIsCallable($handler);
         $this->assertInstanceOf(ResponseTypes::class,$handler->getResponseTypes());
     }
