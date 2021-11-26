@@ -2,21 +2,21 @@
 
 namespace OpenAPI\Runtime\Tests;
 
-use OpenAPI\Runtime\ResponseHandler\JsonPsrResponseHandler;
+use OpenAPI\Runtime\ResponseHandler\JsonResponseHandler;
+use OpenAPI\Runtime\ResponseHandlerStack\JsonResponseHandlerStack;
 use OpenAPI\Runtime\ResponseTypes;
-use OpenAPI\Runtime\SimplePsrResponseHandlerStack;
 use PHPUnit\Framework\TestCase;
 
-class SimplePsrResponseHandlerStackTest extends TestCase
+class SimpleResponseHandlerStackTest extends TestCase
 {
 
     public function test__construct()
     {
         ResponseTypes::setTypes(['a' => 'b']);
 
-        $stack = new SimplePsrResponseHandlerStack(new ResponseTypes());
+        $stack = new JsonResponseHandlerStack(new ResponseTypes());
 
-        /** @var JsonPsrResponseHandler $handler */
+        /** @var JsonResponseHandler $handler */
         $handler = $stack->current();
 
         $this->assertEquals('b', $handler->getResponseTypes()::getTypes()['a']);

@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenAPI\Runtime\Exception;
+namespace OpenAPI\Runtime\ResponseHandlerStack;
 
-class CommonException extends AbstractException
+interface ResponseHandlerStackInterface
 {
-
+    public function handle($response, string $operationId);
 }

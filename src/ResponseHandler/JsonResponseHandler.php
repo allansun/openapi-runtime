@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of OpenApi Runtime.
+ *
+ * (c) Allan Sun <allan.sun@bricre.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace OpenAPI\Runtime\ResponseHandler;
 
@@ -10,7 +18,7 @@ use OpenAPI\Runtime\ResponseTypes;
 use OpenAPI\Runtime\ResponseTypesInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class JsonPsrResponseHandler implements ResponseHandlerInterface, ResponseTypesInjecableInterface
+class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInjecableInterface
 {
     /**
      * @var ResponseTypesInterface
@@ -37,7 +45,6 @@ class JsonPsrResponseHandler implements ResponseHandlerInterface, ResponseTypesI
      * @return ModelInterface|ModelInterface[]
      * @throws UndefinedResponseException
      * @throws UnparsableException
-     * @noinspection DuplicatedCode
      */
     private function invoke(ResponseInterface $response, string $operationId)
     {

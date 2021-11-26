@@ -4,7 +4,7 @@ namespace OpenAPI\Runtime\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
-use OpenAPI\Runtime\ResponseHandlerStack;
+use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack;
 use OpenAPI\Runtime\ResponseTypes;
 use OpenAPI\Runtime\Tests\Fixtures\ResponseHandler\DummyResponseHandler;
 use OpenAPI\Runtime\Tests\Fixtures\ResponseHandler\InvalidResponseHandler;
@@ -29,7 +29,7 @@ class ResponseHandlerStackTest extends TestCase
     /**
      * @dataProvider initStack
      *
-     * @param  ResponseHandlerStack  $stack
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
     public function testAdd(ResponseHandlerStack $stack)
     {
@@ -44,7 +44,7 @@ class ResponseHandlerStackTest extends TestCase
     /**
      * @dataProvider initStack
      *
-     * @param  ResponseHandlerStack  $stack
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
     public function testCurrent(ResponseHandlerStack $stack)
     {
@@ -54,7 +54,7 @@ class ResponseHandlerStackTest extends TestCase
     /**
      * @dataProvider initStack
      *
-     * @param  ResponseHandlerStack  $stack
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
     public function testHandle(ResponseHandlerStack $stack)
     {
@@ -91,7 +91,7 @@ class ResponseHandlerStackTest extends TestCase
     /**
      * @dataProvider initStack
      *
-     * @param  ResponseHandlerStack  $stack
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
     public function testRemove(ResponseHandlerStack $stack)
     {
@@ -102,7 +102,7 @@ class ResponseHandlerStackTest extends TestCase
     /**
      * @dataProvider initStack
      *
-     * @param  ResponseHandlerStack  $stack
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
     public function testRemoveShouldReturnFalse(ResponseHandlerStack $stack)
     {
@@ -112,7 +112,7 @@ class ResponseHandlerStackTest extends TestCase
     /**
      * @dataProvider initStack
      *
-     * @param  ResponseHandlerStack  $stack
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
     public function testRewind(ResponseHandlerStack $stack)
     {
