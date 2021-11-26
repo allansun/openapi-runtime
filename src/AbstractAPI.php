@@ -11,7 +11,7 @@
 namespace OpenAPI\Runtime;
 
 
-abstract class AbstractAPI
+abstract class AbstractAPI implements APIInterface
 {
     /**
      * @var OpenApiClientInterface
