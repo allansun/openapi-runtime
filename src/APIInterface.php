@@ -6,5 +6,5 @@ use Psr\Http\Client\ClientInterface;
 
 interface APIInterface
 {
-    public function __construct(ClientInterface $client);
+    public function __construct(?ClientInterface $client = null);
 }

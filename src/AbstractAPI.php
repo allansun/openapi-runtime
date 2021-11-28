@@ -11,9 +11,14 @@
 namespace OpenAPI\Runtime;
 
 use Http\Discovery\Psr17FactoryDiscovery;
+use Http\Discovery\Psr18ClientDiscovery;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStackInterface;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
 abstract class AbstractAPI implements APIInterface
@@ -28,13 +33,35 @@ abstract class AbstractAPI implements APIInterface
      */
     protected $client;
 
-    public function __construct(ClientInterface $client)
+    /**
+     * @var UriFactoryInterface
+     */
+    protected $uriFactory;
+
+    /**
+     * @var RequestFactoryInterface
+     */
+    protected $requestFactory;
+    /**
+     * @var StreamFactoryInterface
+     */
+    protected $streamFactory;
+
+    public function __construct(?ClientInterface $client = null)
     {
-        $this->client = $client;
+        if (null === $client) {
+            $client = Psr18ClientDiscovery::find();
+        }
+
+        $this->client         = $client;
+        $this->uriFactory     = Psr17FactoryDiscovery::findUriFactory();
+        $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory  = Psr17FactoryDiscovery::findStreamFactory();
 
         if (!static::$responseHandlerStack instanceof ResponseHandlerStackInterface) {
             static::$responseHandlerStack = new static::$responseHandlerStack();
         }
+
     }
 
     /**
@@ -46,31 +73,53 @@ abstract class AbstractAPI implements APIInterface
     }
 
     /**
-     * @param  string                                $operationId
-     * @param  string                                $method
-     * @param  string|UriInterface                   $uri
-     * @param  array                                 $headers
-     * @param  resource|string|StreamInterface|null  $body
-     * @param  string
+     * @param  string                                      $operationId
+     * @param  string                                      $method
+     * @param  string|UriInterface                         $uri
+     * @param  array|resource|string|StreamInterface|null  $body
+     * @param  array<string,mixed>                         $queries
+     * @param  array                                       $headers
+     * @param  string                                      $protocol
      *
      * @return ModelInterface|ModelInterface[]|mixed
+     * @throws ClientExceptionInterface
      */
     protected function request(
         string $operationId,
         string $method,
         $uri,
         $body = null,
+        array $queries = [],
         array $headers = [],
         string $protocol = '1.1'
     ) {
-        $messageFactory = Psr17FactoryDiscovery::findRequestFactory();
+        if (!$uri instanceof UriInterface) {
+            $queryStrings = [];
+            foreach ($queries as $key => $value) {
+                $queryStrings[] = urlencode($key) . '=' . urlencode($value);
+            }
+            $uri = $this->uriFactory->createUri($uri)->withQuery(implode('&', $queryStrings));
+        }
 
-        $request = $messageFactory->createRequest($method, $uri)->withBody($body)->withProtocolVersion($protocol);
+        if (!$body instanceof StreamInterface) {
+            if (is_array($body)) {
+                $body = json_encode($body);
+            }
+            $body = $this->streamFactory->createStream($body);
+        }
+
+        $request = $this->requestFactory
+            ->createRequest($method, $uri)
+            ->withBody($body)
+            ->withProtocolVersion($protocol);
 
         foreach ($headers as $name => $value) {
             $request->withHeader($name, $value);
         }
 
-        return static::$responseHandlerStack->handle($this->client->sendRequest($request), $operationId);
+        return static::$responseHandlerStack->handle(
+            $this->client->sendRequest($request),
+            $operationId
+        );
     }
 }
