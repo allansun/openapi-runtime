@@ -89,9 +89,9 @@ abstract class AbstractAPI implements APIInterface
         string $method,
         $uri,
         $body = null,
-        ?array $queries = [],
-        ?array $headers = [],
-        ?string $protocol = '1.1'
+        array $queries = [],
+        array $headers = [],
+        string $protocol = '1.1'
     ) {
         if (!$uri instanceof UriInterface) {
             $queryStrings = [];
