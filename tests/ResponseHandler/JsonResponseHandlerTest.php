@@ -66,7 +66,7 @@ class JsonResponseHandlerTest extends TestCase
         $handler = new JsonResponseHandler();
 
         $this->expectException(IncompatibleResponseException::class);
-        $handler(new MockResponse(), 'test');
+        $handler(new \stdClass(), 'test');
     }
 
     public function testSetResponseTypes()
