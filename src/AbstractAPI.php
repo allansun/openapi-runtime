@@ -101,7 +101,7 @@ abstract class AbstractAPI implements APIInterface
             $uri = $this->uriFactory->createUri($uri)->withQuery(implode('&', $queryStrings));
         }
 
-        if (!$body instanceof StreamInterface) {
+        if (!$body instanceof StreamInterface && !is_null($body)) {
             if (is_array($body)) {
                 $body = json_encode($body);
             }
@@ -110,8 +110,11 @@ abstract class AbstractAPI implements APIInterface
 
         $request = $this->requestFactory
             ->createRequest($method, $uri)
-            ->withBody($body)
             ->withProtocolVersion($protocol);
+
+        if ($body) {
+            $request->withBody($body);
+        }
 
         foreach ($headers as $name => $value) {
             $request->withHeader($name, $value);
