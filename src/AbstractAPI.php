@@ -13,7 +13,6 @@ namespace OpenAPI\Runtime;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStackInterface;
-use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -72,19 +71,7 @@ abstract class AbstractAPI implements APIInterface
         self::$responseHandlerStack = $responseHandlerStack;
     }
 
-    /**
-     * @param  string                                      $operationId
-     * @param  string                                      $method
-     * @param  string|UriInterface                         $uri
-     * @param  array|resource|string|StreamInterface|null  $body
-     * @param  array<string,mixed>                         $queries
-     * @param  array                                       $headers
-     * @param  string                                      $protocol
-     *
-     * @return ModelInterface|ModelInterface[]|mixed
-     * @throws ClientExceptionInterface
-     */
-    protected function request(
+    public function request(
         string $operationId,
         string $method,
         $uri,
