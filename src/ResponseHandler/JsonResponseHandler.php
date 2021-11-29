@@ -38,6 +38,22 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
         ));
     }
 
+    public function getResponseTypes(): ResponseTypesInterface
+    {
+        if (empty($this->responseTypes)) {
+            $this->responseTypes = new ResponseTypes();
+        }
+
+        return $this->responseTypes;
+    }
+
+    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseTypesInjecableInterface
+    {
+        $this->responseTypes = $responseTypes;
+
+        return $this;
+    }
+
     /**
      * @param  ResponseInterface  $response
      * @param  string             $operationId
@@ -70,22 +86,8 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
             }
         }
 
-        throw new UndefinedResponseException(sprintf("Operation '%s' dose not have a defined response.", $operationId));
-    }
-
-    public function getResponseTypes(): ResponseTypesInterface
-    {
-        if (empty($this->responseTypes)) {
-            $this->responseTypes = new ResponseTypes();
-        }
-
-        return $this->responseTypes;
-    }
-
-    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseTypesInjecableInterface
-    {
-        $this->responseTypes = $responseTypes;
-
-        return $this;
+        throw new UndefinedResponseException(
+            sprintf("Operation '%s' dose not have a defined response when status code is %s",
+                $operationId, $response->getStatusCode()));
     }
 }

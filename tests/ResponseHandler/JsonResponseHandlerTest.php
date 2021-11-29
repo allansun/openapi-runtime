@@ -44,6 +44,20 @@ class JsonResponseHandlerTest extends TestCase
         $this->assertInstanceOf(TestModel::class, $response);
     }
 
+    public function testInvokeWithAbnormalResponseStatusCode()
+    {
+        $this->expectException(UndefinedResponseException::class);
+        $this->expectExceptionMessageMatches('/.*401.*/');
+        ResponseTypes::setTypes([
+            'test' => [
+                '200.' => TestModel::class
+            ]
+        ]);
+        $handler = new JsonResponseHandler();
+
+        $handler(new Response(401, [], '{"namespace":"aaa"}'), 'test');
+    }
+
     public function testInvokeWithArrayResponses()
     {
         ResponseTypes::setTypes([
