@@ -105,11 +105,11 @@ abstract class AbstractAPI implements APIInterface
             ->withProtocolVersion($protocol);
 
         if ($body) {
-            $request->withBody($body);
+           $request = $request->withBody($body);
         }
 
         foreach ($headers as $name => $value) {
-            $request->withHeader($name, $value);
+           $request = $request->withHeader($name, $value);
         }
 
         return static::$responseHandlerStack->handle(
