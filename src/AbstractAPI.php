@@ -83,7 +83,12 @@ abstract class AbstractAPI implements APIInterface
         if (!$uri instanceof UriInterface) {
             $queryStrings = [];
             foreach ($queries as $key => $value) {
-                $queryStrings[] = urlencode($key) . '=' . urlencode($value);
+                if (is_array($value)) {
+                    //$queries will be ['id[]'=>[1,2,3]], encode to id%5B%5D=1&id%5B%5D=2&id%5B%5D=3
+                    $queryStrings[] = urlencode($key) . '=' . implode('&' . urlencode($key) . '=', $value);
+                } else {
+                    $queryStrings[] = urlencode($key) . '=' . urlencode($value);
+                }
             }
             $uri = $this->uriFactory->createUri($uri)->withQuery(implode('&', $queryStrings));
         }
