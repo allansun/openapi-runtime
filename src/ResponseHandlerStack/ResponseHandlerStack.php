@@ -57,6 +57,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     {
         $result = null;
 
+        $this->rewind();
         while ($handler = $this->current()) {
             try {
                 $result = $handler($response, $operationId);
