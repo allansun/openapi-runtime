@@ -1,8 +1,8 @@
 # OpenAPI Client Runtime
 
-[![Latest Stable Version](https://poser.pugx.org/allansun/openapi-runtime/v)](https:://packagist.org/packages/allansun/openapi-runtime)
-[![Total Downloads](https://poser.pugx.org/allansun/openapi-runtime/downloads)](https:://packagist.org/packages/allansun/openapi-runtime)
-[![License](https://poser.pugx.org/allansun/openapi-runtime/license)](https:://packagist.org/packages/allansun/openapi-runtime)
+[![Latest Stable Version](https://poser.pugx.org/allansun/openapi-runtime/v)](https://packagist.org/packages/allansun/openapi-runtime)
+[![Total Downloads](https://poser.pugx.org/allansun/openapi-runtime/downloads)](https://packagist.org/packages/allansun/openapi-runtime)
+[![License](https://poser.pugx.org/allansun/openapi-runtime/license)](https://packagist.org/packages/allansun/openapi-runtime)
 [![codecov](https://codecov.io/gh/allansun/openapi-runtime/branch/master/graph/badge.svg?token=OVYRXPSW2Y)](https://codecov.io/gh/allansun/openapi-runtime)
 
 
@@ -70,7 +70,7 @@ use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack;
 
 ResponseTypes::setTypes([
     'operation_id' =>[ // This should be unique to $ref as defined in the OpenAPI doc
-        '200.' => 'YourGeneratedModelClass::class', // We add a dot after there HTTP status code to enforce string tyep
+        '200.' => 'YourGeneratedModelClass::class', // We add a dot after there HTTP status code to enforce string type
         '404.' => 'ErrorModel::class'
     ]
 ]);
