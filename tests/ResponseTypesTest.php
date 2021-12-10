@@ -11,7 +11,7 @@ class ResponseTypesTest extends TestCase
 
     public function testDummyResponseTypes()
     {
-        $this->assertEquals(['a' => 'b'], DummyResponseTypes::getTypes());
+        $this->assertArrayHasKey('a', DummyResponseTypes::getTypes());
     }
 
     public function testSetGetTypes()

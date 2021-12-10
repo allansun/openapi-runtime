@@ -10,10 +10,8 @@ interface ResponseTypesInjecableInterface
 {
     /**
      * @param  ResponseTypesInterface  $responseTypes
-     *
-     * @return self
      */
-    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseTypesInjecableInterface;
+    public function setResponseTypes(ResponseTypesInterface $responseTypes): void;
 
     /**
      * @return ResponseTypesInterface

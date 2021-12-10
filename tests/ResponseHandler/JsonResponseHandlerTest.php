@@ -3,7 +3,6 @@
 namespace OpenAPI\Runtime\Tests\ResponseHandler;
 
 use GuzzleHttp\Psr7\Response;
-use OpenAPI\Runtime\ResponseHandler\Exception\IncompatibleResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
 use OpenAPI\Runtime\ResponseHandler\JsonResponseHandler;
@@ -73,14 +72,6 @@ class JsonResponseHandlerTest extends TestCase
         foreach ($responses as $response) {
             $this->assertInstanceOf(TestModel::class, $response);
         }
-    }
-
-    public function test__invokeShouldFail()
-    {
-        $handler = new JsonResponseHandler();
-
-        $this->expectException(IncompatibleResponseException::class);
-        $handler(new \stdClass(), 'test');
     }
 
     public function testSetResponseTypes()

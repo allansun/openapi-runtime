@@ -10,7 +10,10 @@
 
 namespace OpenAPI\Runtime\ResponseHandlerStack;
 
+use OpenAPI\Runtime\ModelInterface;
+use Psr\Http\Message\ResponseInterface;
+
 interface ResponseHandlerStackInterface
 {
-    public function handle($response, string $operationId);
+    public function handle(ResponseInterface $response, string $operationId): array|ModelInterface|null;
 }

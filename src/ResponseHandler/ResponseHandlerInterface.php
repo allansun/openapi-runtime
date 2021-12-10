@@ -5,16 +5,17 @@ namespace OpenAPI\Runtime\ResponseHandler;
 
 
 use OpenAPI\Runtime\ModelInterface;
-use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
+use OpenAPI\Runtime\ResponseHandler\Exception\ResponseHandlerThrowable;
+use Psr\Http\Message\ResponseInterface;
 
 interface ResponseHandlerInterface
 {
     /**
-     * @param          $response
-     * @param  string  $operationId
+     * @param  ResponseInterface  $response
+     * @param  string             $operationId
      *
-     * @return ModelInterface|ModelInterface[]
-     * @throws UnparsableException
+     * @return ModelInterface|ModelInterface[]|null
+     * @throws ResponseHandlerThrowable
      */
-    public function __invoke($response, string $operationId);
+    public function __invoke(ResponseInterface $response, string $operationId);
 }

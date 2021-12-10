@@ -12,11 +12,11 @@ namespace OpenAPI\Runtime;
 
 interface ModelInterface
 {
-    public function exchangeArray($data);
+    public function exchangeArray($data): ModelInterface;
 
-    public function getArrayCopy();
+    public function getArrayCopy(): array;
 
-    public function toJson();
+    public function toJson(): string;
 
-    public function isRawObject();
+    public function isRawObject(): bool;
 }

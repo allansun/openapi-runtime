@@ -73,7 +73,7 @@ abstract class AbstractModel implements ModelInterface
      *
      * @return self
      */
-    public function exchangeArray($data): AbstractModel
+    public function exchangeArray($data): ModelInterface
     {
         if ($this->isRawObject) {
             $this->rawData = $data;
@@ -139,7 +139,7 @@ abstract class AbstractModel implements ModelInterface
      *
      * @return $this
      */
-    protected function parseProperty($index, $value): AbstractModel
+    protected function parseProperty($index, $value): ModelInterface
     {
         $propertyTypes = $this->getPropertyTypes($this, $index);
 

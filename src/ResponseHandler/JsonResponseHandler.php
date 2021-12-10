@@ -10,59 +10,18 @@
 
 namespace OpenAPI\Runtime\ResponseHandler;
 
-use OpenAPI\Runtime\ModelInterface;
-use OpenAPI\Runtime\ResponseHandler\Exception\IncompatibleResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
-use OpenAPI\Runtime\ResponseTypes;
-use OpenAPI\Runtime\ResponseTypesInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInjecableInterface
 {
-    /**
-     * @var ResponseTypesInterface
-     */
-    private $responseTypes;
-
-    public function __invoke($response, string $operationId)
-    {
-        if ($response instanceof ResponseInterface) {
-            return $this->invoke($response, $operationId);
-        }
-
-        throw new IncompatibleResponseException(sprintf(
-            '%s cannot handle %s response',
-            self::class,
-            get_class($response)
-        ));
-    }
-
-    public function getResponseTypes(): ResponseTypesInterface
-    {
-        if (empty($this->responseTypes)) {
-            $this->responseTypes = new ResponseTypes();
-        }
-
-        return $this->responseTypes;
-    }
-
-    public function setResponseTypes(ResponseTypesInterface $responseTypes): ResponseTypesInjecableInterface
-    {
-        $this->responseTypes = $responseTypes;
-
-        return $this;
-    }
+    use ResponseTypesInjecableTrait;
 
     /**
-     * @param  ResponseInterface  $response
-     * @param  string             $operationId
-     *
-     * @return ModelInterface|ModelInterface[]
-     * @throws UndefinedResponseException
-     * @throws UnparsableException
+     * @inheritDoc
      */
-    private function invoke(ResponseInterface $response, string $operationId)
+    public function __invoke(ResponseInterface $response, string $operationId)
     {
         $contents = json_decode((string)$response->getBody(), true);
 
@@ -86,8 +45,7 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
             }
         }
 
-        throw new UndefinedResponseException(
-            sprintf("Operation '%s' dose not have a defined response when status code is %s",
-                $operationId, $response->getStatusCode()));
+        throw new UndefinedResponseException($operationId, $response->getStatusCode());
     }
+
 }

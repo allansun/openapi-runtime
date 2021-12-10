@@ -22,29 +22,12 @@ use Psr\Http\Message\UriInterface;
 
 abstract class AbstractAPI implements APIInterface
 {
-    /**
-     * @var string|ResponseHandlerStackInterface
-     */
-    protected static $responseHandlerStack;
+    protected static ResponseHandlerStackInterface|string $responseHandlerStack;
 
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
-
-    /**
-     * @var UriFactoryInterface
-     */
-    protected $uriFactory;
-
-    /**
-     * @var RequestFactoryInterface
-     */
-    protected $requestFactory;
-    /**
-     * @var StreamFactoryInterface
-     */
-    protected $streamFactory;
+    protected ClientInterface $client;
+    protected UriFactoryInterface $uriFactory;
+    protected RequestFactoryInterface $requestFactory;
+    protected StreamFactoryInterface $streamFactory;
 
     public function __construct(?ClientInterface $client = null)
     {
@@ -57,10 +40,18 @@ abstract class AbstractAPI implements APIInterface
         $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();
         $this->streamFactory  = Psr17FactoryDiscovery::findStreamFactory();
 
-        if (!static::$responseHandlerStack instanceof ResponseHandlerStackInterface) {
-            static::$responseHandlerStack = new static::$responseHandlerStack();
+    }
+
+    /**
+     * @return ResponseHandlerStackInterface
+     */
+    public static function getResponseHandlerStack(): ResponseHandlerStackInterface
+    {
+        if (!isset(self::$responseHandlerStack)) {
+            self::$responseHandlerStack = new static::$responseHandlerStack();
         }
 
+        return self::$responseHandlerStack;
     }
 
     /**
@@ -74,12 +65,12 @@ abstract class AbstractAPI implements APIInterface
     public function request(
         string $operationId,
         string $method,
-        $uri,
-        $body = null,
+        UriInterface|string $uri,
+        StreamInterface|array|string $body = null,
         array $queries = [],
         array $headers = [],
         string $protocol = '1.1'
-    ) {
+    ): array|ModelInterface|null {
         if (!$uri instanceof UriInterface) {
             $queryStrings = [];
             foreach ($queries as $key => $value) {
@@ -105,14 +96,14 @@ abstract class AbstractAPI implements APIInterface
             ->withProtocolVersion($protocol);
 
         if ($body) {
-           $request = $request->withBody($body);
+            $request = $request->withBody($body);
         }
 
         foreach ($headers as $name => $value) {
-           $request = $request->withHeader($name, $value);
+            $request = $request->withHeader($name, $value);
         }
 
-        return static::$responseHandlerStack->handle(
+        return static::getResponseHandlerStack()->handle(
             $this->client->sendRequest($request),
             $operationId
         );

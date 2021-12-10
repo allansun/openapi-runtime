@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace OpenAPI\Runtime\Exception;
+namespace OpenAPI\Runtime;
 
 
-class ResponseException extends AbstractException
+abstract class AbstractException extends \Exception
 {
 
 }

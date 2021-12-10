@@ -11,15 +11,16 @@
 namespace OpenAPI\Runtime\ResponseHandlerStack;
 
 use OpenAPI\Runtime\ModelInterface;
-use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
+use OpenAPI\Runtime\ResponseHandler\Exception\ResponseHandlerThrowable;
 use OpenAPI\Runtime\ResponseHandler\ResponseHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
 {
     /**
      * @var ResponseHandlerInterface[]
      */
-    private $handlers;
+    protected array $handlers;
 
     /**
      * ResponseHandlerStack constructor.
@@ -46,14 +47,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         $this->handlers[$priority] = $callable;
     }
 
-    /**
-     * @param          $response
-     * @param  string  $operationId
-     *
-     * @return ModelInterface|ModelInterface[]|null
-     * @throws UnparsableException
-     */
-    public function handle($response, string $operationId)
+    public function handle(ResponseInterface $response, string $operationId): array|ModelInterface|null
     {
         $result = null;
 
@@ -61,7 +55,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         while ($handler = $this->current()) {
             try {
                 $result = $handler($response, $operationId);
-            } catch (UnparsableException $e) {
+            } catch (ResponseHandlerThrowable $e) {
                 if (!$this->next()) {
                     throw $e;
                 }
@@ -72,10 +66,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         return $result;
     }
 
-    /**
-     * @return ResponseHandlerInterface|false
-     */
-    public function current()
+    public function current(): bool|ResponseHandlerInterface
     {
         return current($this->handlers);
     }
@@ -90,10 +81,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         return next($this->handlers);
     }
 
-    /**
-     * @return ResponseHandlerInterface|false
-     */
-    public function rewind()
+    public function rewind(): bool|ResponseHandlerInterface
     {
         return reset($this->handlers);
     }
