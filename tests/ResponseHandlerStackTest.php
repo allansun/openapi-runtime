@@ -3,6 +3,9 @@
 namespace OpenAPI\Runtime\Tests;
 
 use GuzzleHttp\Psr7\Response;
+use OpenAPI\Runtime\AbnormalHttpStatusModelInterface;
+use OpenAPI\Runtime\ResponseHandler\AbnormalResponseStatusHandler;
+use OpenAPI\Runtime\ResponseHandler\Allow404ResponseStatusHandler;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack;
 use OpenAPI\Runtime\ResponseTypes;
@@ -65,6 +68,25 @@ class ResponseHandlerStackTest extends TestCase
         ]);
 
         $this->assertInstanceOf(TestModel::class, $stack->handle(new Response(), 'test'));
+    }
+
+    /**
+     * @dataProvider initStack
+     *
+     * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
+     */
+    public function testMultipleHandler(ResponseHandlerStack $stack)
+    {
+        $stack->add(new AbnormalResponseStatusHandler());
+        $stack->add(new Allow404ResponseStatusHandler());
+        ResponseTypes::setTypes([
+            'test' => [
+                '200.' => '{success:false}'
+            ]
+        ]);
+
+        $this->assertInstanceOf(AbnormalHttpStatusModelInterface::class, $stack->handle(new Response(500), 'test'));
+        $this->assertEquals(null, $stack->handle(new Response(404), 'test'));
     }
 
     public function testHandleShouldFail()

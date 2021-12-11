@@ -49,18 +49,18 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
 
     public function handle(ResponseInterface $response, string $operationId): array|ModelInterface|null
     {
-        $result = null;
+        $result = false;
 
         $this->rewind();
         while ($handler = $this->current()) {
             try {
                 $result = $handler($response, $operationId);
+                $this->next();
             } catch (ResponseHandlerThrowable $e) {
-                if (!$this->next()) {
+                if (!$this->next() && false === $result) {
                     throw $e;
                 }
             }
-            $this->next();
         }
 
         return $result;
@@ -71,12 +71,12 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         return current($this->handlers);
     }
 
-    public function key()
+    public function key(): int
     {
         return key($this->handlers);
     }
 
-    public function next(): bool
+    public function next(): bool|ResponseHandlerInterface
     {
         return next($this->handlers);
     }
