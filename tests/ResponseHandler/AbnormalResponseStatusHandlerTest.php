@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class AbnormalResponseStatusHandlerTest extends TestCase
 {
-    public function test__invoke()
+    public function test__invoke(): void
     {
         $handler = new AbnormalResponseStatusHandler();
 
@@ -21,7 +21,7 @@ class AbnormalResponseStatusHandlerTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('namespace', $response->contents);
     }
 
-    public function test__invokeShouldThrowException()
+    public function test__invokeShouldThrowException(): void
     {
         $this->expectException(ResponseHandlerThrowable::class);
 

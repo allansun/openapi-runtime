@@ -10,19 +10,19 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractModelTest extends TestCase
 {
-    public function testExchangeArray()
+    public function testExchangeArray(): void
     {
         $TestModel = new AnotherTestModel(['namespace' => 'another']);
         $this->assertEquals('another', $TestModel->namespace);
     }
 
-    public function testExchangeArrayWithString()
+    public function testExchangeArrayWithString(): void
     {
         $TestModel = new AnotherTestModel(json_encode(['namespace' => 'another']));
         $this->assertEquals('another', $TestModel->namespace);
     }
 
-    public function testGetArrayCopy()
+    public function testGetArrayCopy(): void
     {
         $TestModel = new TestModel([
             'status'           => new TestRawModel(['foo' => 'bar']),
@@ -44,7 +44,7 @@ class AbstractModelTest extends TestCase
         $this->assertInstanceOf(AnotherTestModel::class, $TestRawModel);
     }
 
-    public function testGetArrayCopyRawObject()
+    public function testGetArrayCopyRawObject(): void
     {
         $TestRawModel = new TestRawModel(['foo' => 'bar']);
         $data         = $TestRawModel->getArrayCopy();
@@ -52,13 +52,13 @@ class AbstractModelTest extends TestCase
         $this->assertEquals('bar', $data['foo']);
     }
 
-    public function testIsRawObject()
+    public function testIsRawObject(): void
     {
         $TestRawModel = new TestRawModel();
         $this->assertTrue($TestRawModel->isRawObject());
     }
 
-    public function testToJson()
+    public function testToJson(): void
     {
         $TestModel = new TestModel();
         $this->assertJsonStringEqualsJsonString(

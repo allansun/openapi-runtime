@@ -13,7 +13,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 
 class JsonResponseHandlerTest extends TestCase
 {
-    public function testInvokeShouldFailWithUndefinedResponseException()
+    public function testInvokeShouldFailWithUndefinedResponseException(): void
     {
         $handler = new JsonResponseHandler();
 
@@ -21,7 +21,7 @@ class JsonResponseHandlerTest extends TestCase
         $handler(new Response(200, [], '{"foo":"bar"}'), 'NOT_EXIST');
     }
 
-    public function testInvokeShouldFailWithUnparsableException()
+    public function testInvokeShouldFailWithUnparsableException(): void
     {
         $handler = new JsonResponseHandler();
 
@@ -29,7 +29,7 @@ class JsonResponseHandlerTest extends TestCase
         $handler(new Response(200, [], 'not_a_valid_json'), 'test');
     }
 
-    public function testInvokeWithNormalResponse()
+    public function testInvokeWithNormalResponse(): void
     {
         ResponseTypes::setTypes([
             'test' => [
@@ -43,7 +43,7 @@ class JsonResponseHandlerTest extends TestCase
         $this->assertInstanceOf(TestModel::class, $response);
     }
 
-    public function testInvokeWithAbnormalResponseStatusCode()
+    public function testInvokeWithAbnormalResponseStatusCode(): void
     {
         $this->expectException(UndefinedResponseException::class);
         $this->expectExceptionMessageMatches('/.*401.*/');
@@ -57,7 +57,7 @@ class JsonResponseHandlerTest extends TestCase
         $handler(new Response(401, [], '{"namespace":"aaa"}'), 'test');
     }
 
-    public function testInvokeWithArrayResponses()
+    public function testInvokeWithArrayResponses(): void
     {
         ResponseTypes::setTypes([
             'test' => [
@@ -74,7 +74,7 @@ class JsonResponseHandlerTest extends TestCase
         }
     }
 
-    public function testSetResponseTypes()
+    public function testSetResponseTypes(): void
     {
         $handler = new JsonResponseHandler();
         $handler->setResponseTypes(new ResponseTypes());

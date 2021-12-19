@@ -24,19 +24,19 @@ class AbstractAPITest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testSetResponseHandlerStack()
+    public function testSetResponseHandlerStack(): void
     {
         $api = new TestAPI();
         $this->assertInstanceOf(ResponseHandlerStackInterface::class, $api::getResponseHandlerStack());
     }
 
-    public function testRequest()
+    public function testRequest(): void
     {
         $model = $this->getTestAPI()->getById(1);
         $this->assertInstanceOf(TestModel::class, $model);
     }
 
-    public function testRequestWithSimpleQuery()
+    public function testRequestWithSimpleQuery(): void
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
@@ -50,7 +50,7 @@ class AbstractAPITest extends TestCase
     }
 
 
-    public function testRequestWithArrayQuery()
+    public function testRequestWithArrayQuery(): void
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
@@ -63,7 +63,7 @@ class AbstractAPITest extends TestCase
         $api->request('testApiGetById', 'GET', '/test', null, ['a[]' => [1, 2]]);
     }
 
-    public function testRequestWithBody()
+    public function testRequestWithBody(): void
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
@@ -73,10 +73,10 @@ class AbstractAPITest extends TestCase
         }))->willReturn(new Response('200', [], (new TestModel())->toJson()))->shouldBeCalled();
 
         $api = new TestAPI($client->reveal());
-        $api->request('testApiGetById', 'GET', '/test', ['test' => 'a'],);
+        $api->request('testApiGetById', 'GET', '/test', ['test' => 'a']);
     }
 
-    public function testRequestWithHeaders()
+    public function testRequestWithHeaders(): void
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
@@ -89,7 +89,7 @@ class AbstractAPITest extends TestCase
         $api->request('testApiGetById', 'GET', '/test', null, [], ['test' => 'a']);
     }
 
-    public function testWithInvalidResponseHanlderStackClass()
+    public function testWithInvalidResponseHanlderStackClass(): void
     {
         $this->expectException(InvalidResponseHandlerStackException::class);
         $this->expectExceptionMessageMatches('/should be compatible with/');

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class AbnormalHttpStatusTest extends TestCase
 {
-    public function test__construct()
+    public function test__construct(): void
     {
         $instance = new AbnormalHttpStatus(['statusCode' => '200', 'contents' => '{"success":true}']);
 

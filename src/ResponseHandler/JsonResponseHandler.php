@@ -20,9 +20,7 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
 {
     use ResponseTypesInjecableTrait;
 
-    /**
-     * @inheritDoc
-     */
+    /** @psalm-suppress MoreSpecificReturnType */
     public function __invoke(ResponseInterface $response, string $operationId): ModelInterface|array
     {
         $contents = json_decode((string)$response->getBody(), true);
@@ -45,6 +43,7 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
 
                 return $results;
             } else {
+                /** @psalm-suppress LessSpecificReturnStatement */
                 return new $className($contents);
             }
         }

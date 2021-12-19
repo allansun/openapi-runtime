@@ -9,6 +9,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class InvalidResponseHandler implements ResponseHandlerInterface
 {
+    /**
+     * @return never
+     */
     public function __invoke(ResponseInterface $response, string $operationId): ?ModelInterface
     {
         throw new UndefinedResponseException($operationId, $response->getStatusCode());

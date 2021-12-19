@@ -14,9 +14,9 @@ namespace OpenAPI\Runtime;
 class ResponseTypes implements ResponseTypesInterface
 {
     /**
-     * @var <string,array>array
+     * @var array
      */
-    protected static $types = [];
+    protected static array $types = [];
 
     public static function getTypes(): array
     {

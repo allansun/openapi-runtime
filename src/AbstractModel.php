@@ -22,7 +22,7 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
  */
 abstract class AbstractModel implements ModelInterface
 {
-    protected static ?PropertyInfoExtractor $PropertyInfoExtractor;
+    protected static PropertyInfoExtractor $PropertyInfoExtractor;
     /**
      * @var array Cache for reflection results
      */
@@ -36,17 +36,8 @@ abstract class AbstractModel implements ModelInterface
     public function __construct(mixed $data = null)
     {
         if (!isset(static::$PropertyInfoExtractor)) {
-            $ReflectionExtractor = new ReflectionExtractor();
-            $PhpDocExtractor     = new PhpDocExtractor();
-
-            self::$PropertyInfoExtractor = new PropertyInfoExtractor(
-                [$ReflectionExtractor],
-                [$PhpDocExtractor, $ReflectionExtractor],
-                [$PhpDocExtractor],
-                [$ReflectionExtractor]
-            );
+            static::$PropertyInfoExtractor = $this->initializePropertyInfoExtractor();
         }
-
 
         if (is_string($data)) {
             $data = \json_decode($data, true) ?: $data;
@@ -55,7 +46,9 @@ abstract class AbstractModel implements ModelInterface
         $this->exchangeArray($data);
     }
 
-
+    /**
+     * @return static
+     */
     public function exchangeArray(mixed $data): ModelInterface
     {
         if ($this->isRawObject) {
@@ -73,7 +66,6 @@ abstract class AbstractModel implements ModelInterface
         return $this;
     }
 
-
     public function getArrayCopy(): array
     {
         $arrayCopy = [];
@@ -81,15 +73,17 @@ abstract class AbstractModel implements ModelInterface
             $arrayCopy = $this->rawData;
         } else {
             $properties = self::$PropertyInfoExtractor->getProperties(get_class($this));
-            foreach ($properties as $property) {
-                if (property_exists($this, $property)) {
-                    $propertyValue = $this->getProperty($this->$property);
-                    if (null !== $propertyValue) {
-                        $propertyName = $property;
-                        if (str_starts_with($propertyName, '_')) {
-                            $propertyName = str_replace('_', '$', $propertyName);
+            if ($properties) {
+                foreach ($properties as $property) {
+                    if (property_exists($this, $property)) {
+                        $propertyValue = $this->getProperty($this->$property);
+                        if (null !== $propertyValue) {
+                            $propertyName = $property;
+                            if (str_starts_with($propertyName, '_')) {
+                                $propertyName = str_replace('_', '$', $propertyName);
+                            }
+                            $arrayCopy[$propertyName] = $propertyValue;
                         }
-                        $arrayCopy[$propertyName] = $propertyValue;
                     }
                 }
             }
@@ -98,19 +92,17 @@ abstract class AbstractModel implements ModelInterface
         return $arrayCopy;
     }
 
-
     public function isRawObject(): bool
     {
         return $this->isRawObject;
     }
-
 
     public function toJson(): string
     {
         return \json_encode($this->getArrayCopy());
     }
 
-    protected function parseProperty(int|string $index, mixed $value): ModelInterface
+    protected function parseProperty(string $index, mixed $value): static
     {
         $propertyTypes = $this->getPropertyTypes($this, $index);
 
@@ -159,7 +151,7 @@ abstract class AbstractModel implements ModelInterface
         return $this;
     }
 
-    protected function getPropertyTypes(ModelInterface $object, $index): ?array
+    protected function getPropertyTypes(ModelInterface $object, string $index): array
     {
         $objectClass = get_class($object);
 
@@ -169,7 +161,7 @@ abstract class AbstractModel implements ModelInterface
         ) {
             $propertyTypes = static::$reflectionCache[$objectClass][$index];
         } else {
-            $propertyTypes = static::$PropertyInfoExtractor->getTypes($objectClass, $index);
+            $propertyTypes = static::$PropertyInfoExtractor->getTypes($objectClass, $index) ?? [];
 
             static::$reflectionCache[$objectClass][$index] = $propertyTypes;
         }
@@ -177,7 +169,7 @@ abstract class AbstractModel implements ModelInterface
         return $propertyTypes;
     }
 
-    protected function getProperty($theProperty): mixed
+    protected function getProperty(mixed $theProperty): mixed
     {
         $arrayCopy = null;
 
@@ -192,5 +184,18 @@ abstract class AbstractModel implements ModelInterface
         }
 
         return $arrayCopy;
+    }
+
+    private function initializePropertyInfoExtractor(): PropertyInfoExtractor
+    {
+        $ReflectionExtractor = new ReflectionExtractor();
+        $PhpDocExtractor     = new PhpDocExtractor();
+
+        return new PropertyInfoExtractor(
+            [$ReflectionExtractor],
+            [$PhpDocExtractor, $ReflectionExtractor],
+            [$PhpDocExtractor],
+            [$ReflectionExtractor]
+        );
     }
 }

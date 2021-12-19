@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpPureAttributeCanBeAddedInspection */
+<?php
+
+/** @noinspection PhpPureAttributeCanBeAddedInspection */
 
 namespace OpenAPI\Runtime\ResponseHandler\Exception;
 

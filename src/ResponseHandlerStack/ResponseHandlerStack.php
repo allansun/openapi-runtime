@@ -49,6 +49,11 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         $this->handlers[$priority] = $callable;
     }
 
+    /**
+     * @return ModelInterface|ModelInterface[]|null
+     *
+     * @psalm-return ModelInterface|array<ModelInterface>|null
+     */
     public function handle(ResponseInterface $response, string $operationId): array|ModelInterface|null
     {
         $result = false;
@@ -57,12 +62,9 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         while ($handler = $this->current()) {
             try {
                 $result = $handler($response, $operationId);
-                $this->next();
-            } catch (ResponseHandlerThrowable $e) {
-                if (!$this->next() && false === $result) {
-                    throw $e;
-                }
+            } /** @noinspection PhpRedundantCatchClauseInspection */ catch (ResponseHandlerThrowable $e) {
             }
+            $this->next();
         }
 
         if (false === $result) {
@@ -72,8 +74,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         }
     }
 
-    #[\ReturnTypeWillChange]
-    public function current(): bool|ResponseHandlerInterface
+    public function current(): ResponseHandlerInterface|bool
     {
         return current($this->handlers);
     }
@@ -83,16 +84,14 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         return key($this->handlers);
     }
 
-    #[\ReturnTypeWillChange]
-    public function next(): bool|ResponseHandlerInterface
+    public function next(): void
     {
-        return next($this->handlers);
+        next($this->handlers);
     }
 
-    #[\ReturnTypeWillChange]
-    public function rewind(): bool|ResponseHandlerInterface
+    public function rewind(): void
     {
-        return reset($this->handlers);
+        reset($this->handlers);
     }
 
     public function valid(): bool

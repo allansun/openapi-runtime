@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class Allow404ResponseStatusHandlerTest extends TestCase
 {
-    public function test__invoke()
+    public function test__invoke(): void
     {
         $handler = new Allow404ResponseStatusHandler();
 
@@ -18,7 +18,7 @@ class Allow404ResponseStatusHandlerTest extends TestCase
         $this->assertEquals(null, $response);
     }
 
-    public function test__invokeShouldThrowException()
+    public function test__invokeShouldThrowException(): void
     {
         $this->expectException(ResponseHandlerThrowable::class);
 

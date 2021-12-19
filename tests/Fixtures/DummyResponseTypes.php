@@ -6,7 +6,12 @@ use OpenAPI\Runtime\ResponseTypes;
 
 class DummyResponseTypes extends ResponseTypes
 {
-    public static $types = [
+    /**
+     * @var (string|string[])[]
+     *
+     * @psalm-var array{a: 'b', testApiGetById: array{'200.': TestModel::class}}
+     */
+    public static array $types = [
         'a' => 'b',
         'testApiGetById' => [
             '200.' => TestModel::class

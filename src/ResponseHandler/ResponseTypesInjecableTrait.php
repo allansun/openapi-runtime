@@ -7,11 +7,11 @@ use OpenAPI\Runtime\ResponseTypesInterface;
 
 trait ResponseTypesInjecableTrait
 {
-    private ResponseTypesInterface $responseTypes;
+    private ?ResponseTypesInterface $responseTypes;
 
     public function getResponseTypes(): ResponseTypesInterface
     {
-        if (empty($this->responseTypes)) {
+        if (!isset($this->responseTypes)) {
             $this->responseTypes = new ResponseTypes();
         }
 

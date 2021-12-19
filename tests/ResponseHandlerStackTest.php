@@ -16,6 +16,11 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseHandlerStackTest extends TestCase
 {
+    /**
+     * @return ResponseHandlerStack[][]
+     *
+     * @psalm-return array{default: array{0: ResponseHandlerStack}}
+     */
     public function initStack(): array
     {
         $stack = new ResponseHandlerStack();
@@ -34,7 +39,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testAdd(ResponseHandlerStack $stack)
+    public function testAdd(ResponseHandlerStack $stack): void
     {
 
         $this->expectException(\InvalidArgumentException::class);
@@ -49,7 +54,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testCurrent(ResponseHandlerStack $stack)
+    public function testCurrent(ResponseHandlerStack $stack): void
     {
         $this->assertInstanceOf(DummyResponseHandler::class, $stack->current());
     }
@@ -59,7 +64,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testHandle(ResponseHandlerStack $stack)
+    public function testHandle(ResponseHandlerStack $stack): void
     {
         ResponseTypes::setTypes([
             'test' => [
@@ -75,7 +80,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testMultipleHandler(ResponseHandlerStack $stack)
+    public function testMultipleHandler(ResponseHandlerStack $stack): void
     {
         $stack->add(new AbnormalResponseStatusHandler());
         $stack->add(new Allow404ResponseStatusHandler());
@@ -89,7 +94,7 @@ class ResponseHandlerStackTest extends TestCase
         $this->assertEquals(null, $stack->handle(new Response(404), 'test'));
     }
 
-    public function testHandleShouldFail()
+    public function testHandleShouldFail(): void
     {
         $this->expectException(UndefinedResponseException::class);
 
@@ -98,28 +103,21 @@ class ResponseHandlerStackTest extends TestCase
         $stack->handle(new Response(), 'test');
     }
 
-    public function testKey()
+    public function testKey(): void
     {
         $stack = new ResponseHandlerStack();
         $stack->add(new InvalidResponseHandler(), 100);
         $this->assertEquals(100, $stack->key());
     }
 
-    public function testNext()
-    {
-        $stack = new ResponseHandlerStack();
-        $this->assertFalse($stack->next());
-    }
-
     /**
      * @dataProvider initStack
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testRemove(ResponseHandlerStack $stack)
+    public function testRemove(ResponseHandlerStack $stack): void
     {
         $this->assertTrue($stack->remove(DummyResponseHandler::class));
-        $this->assertFalse($stack->next());
     }
 
     /**
@@ -127,7 +125,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testRemoveShouldReturnFalse(ResponseHandlerStack $stack)
+    public function testRemoveShouldReturnFalse(ResponseHandlerStack $stack): void
     {
         $this->assertFalse($stack->remove(InvalidResponseHandler::class));
     }
@@ -137,7 +135,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  \OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack  $stack
      */
-    public function testRewind(ResponseHandlerStack $stack)
+    public function testRewind(ResponseHandlerStack $stack): void
     {
         $stack->next();
         $stack->rewind();
@@ -149,7 +147,7 @@ class ResponseHandlerStackTest extends TestCase
      *
      * @param  ResponseHandlerStack  $stack
      */
-    public function testValid(ResponseHandlerStack $stack)
+    public function testValid(ResponseHandlerStack $stack): void
     {
         $this->assertTrue($stack->valid());
     }

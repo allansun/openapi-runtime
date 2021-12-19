@@ -6,5 +6,5 @@ use OpenAPI\Runtime\AbstractModel;
 
 class AnotherTestModel extends AbstractModel
 {
-    public $namespace = 'another-namespace';
+    public string $namespace = 'another-namespace';
 }
