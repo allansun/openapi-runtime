@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of OpenApi Runtime.
  *
@@ -12,6 +13,7 @@ namespace OpenAPI\Runtime\ResponseHandlerStack;
 
 use OpenAPI\Runtime\ModelInterface;
 use OpenAPI\Runtime\ResponseHandler\Exception\ResponseHandlerThrowable;
+use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\ResponseHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -63,9 +65,14 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
             }
         }
 
-        return $result;
+        if (false === $result) {
+            throw new UndefinedResponseException($operationId, $response->getStatusCode());
+        } else {
+            return $result;
+        }
     }
 
+    #[\ReturnTypeWillChange]
     public function current(): bool|ResponseHandlerInterface
     {
         return current($this->handlers);
@@ -76,11 +83,13 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         return key($this->handlers);
     }
 
+    #[\ReturnTypeWillChange]
     public function next(): bool|ResponseHandlerInterface
     {
         return next($this->handlers);
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind(): bool|ResponseHandlerInterface
     {
         return reset($this->handlers);

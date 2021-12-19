@@ -11,7 +11,7 @@ class AbnormalResponseStatusHandler implements ResponseHandlerInterface
     /**
      * @inheritDoc
      */
-    public function __invoke(ResponseInterface $response, string $operationId)
+    public function __invoke(ResponseInterface $response, string $operationId): AbnormalHttpStatus
     {
         if (!($response->getStatusCode() >= 200 && $response->getStatusCode() <= 300)) {
             return new AbnormalHttpStatus([

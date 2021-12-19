@@ -1,8 +1,6 @@
 <?php
 
-
 namespace OpenAPI\Runtime\ResponseHandler;
-
 
 use OpenAPI\Runtime\ResponseTypesInterface;
 

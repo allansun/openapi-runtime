@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of OpenApi Runtime.
  *
@@ -13,7 +14,6 @@ namespace OpenAPI\Runtime;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\PropertyInfo\Type;
 
 /**
  * Class AbstractModel
@@ -22,31 +22,18 @@ use Symfony\Component\PropertyInfo\Type;
  */
 abstract class AbstractModel implements ModelInterface
 {
-    /**
-     * @var PropertyInfoExtractor|null
-     */
-    protected static $PropertyInfoExtractor;
+    protected static ?PropertyInfoExtractor $PropertyInfoExtractor;
     /**
      * @var array Cache for reflection results
      */
-    protected static $reflectionCache = [];
+    protected static array $reflectionCache = [];
     /**
      * TRUE means this object is a simple object contains one basic value, such as intger, string, datetime
-     *
-     * @var boolean
      */
-    protected $isRawObject = false;
-    /**
-     * @var mixed
-     */
-    protected $rawData;
+    protected bool $isRawObject = false;
+    protected mixed $rawData;
 
-    /**
-     * AbstractModel constructor.
-     *
-     * @param  \StdClass|array!string $data
-     */
-    public function __construct($data = null)
+    public function __construct(mixed $data = null)
     {
         if (!isset(static::$PropertyInfoExtractor)) {
             $ReflectionExtractor = new ReflectionExtractor();
@@ -68,12 +55,8 @@ abstract class AbstractModel implements ModelInterface
         $this->exchangeArray($data);
     }
 
-    /**
-     * @param $data
-     *
-     * @return self
-     */
-    public function exchangeArray($data): ModelInterface
+
+    public function exchangeArray(mixed $data): ModelInterface
     {
         if ($this->isRawObject) {
             $this->rawData = $data;
@@ -90,9 +73,7 @@ abstract class AbstractModel implements ModelInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
+
     public function getArrayCopy(): array
     {
         $arrayCopy = [];
@@ -105,7 +86,7 @@ abstract class AbstractModel implements ModelInterface
                     $propertyValue = $this->getProperty($this->$property);
                     if (null !== $propertyValue) {
                         $propertyName = $property;
-                        if (0 === strpos($propertyName, '_')) {
+                        if (str_starts_with($propertyName, '_')) {
                             $propertyName = str_replace('_', '$', $propertyName);
                         }
                         $arrayCopy[$propertyName] = $propertyValue;
@@ -117,29 +98,19 @@ abstract class AbstractModel implements ModelInterface
         return $arrayCopy;
     }
 
-    /**
-     * @return bool
-     */
+
     public function isRawObject(): bool
     {
         return $this->isRawObject;
     }
 
-    /**
-     * @return string
-     */
+
     public function toJson(): string
     {
         return \json_encode($this->getArrayCopy());
     }
 
-    /**
-     * @param $index
-     * @param $value
-     *
-     * @return $this
-     */
-    protected function parseProperty($index, $value): ModelInterface
+    protected function parseProperty(int|string $index, mixed $value): ModelInterface
     {
         $propertyTypes = $this->getPropertyTypes($this, $index);
 
@@ -188,18 +159,14 @@ abstract class AbstractModel implements ModelInterface
         return $this;
     }
 
-    /**
-     * @param  ModelInterface  $object
-     * @param                  $index
-     *
-     * @return Type[]|null
-     */
     protected function getPropertyTypes(ModelInterface $object, $index): ?array
     {
         $objectClass = get_class($object);
 
-        if (array_key_exists($objectClass, static::$reflectionCache) &&
-            array_key_exists($index, static::$reflectionCache[$objectClass])) {
+        if (
+            array_key_exists($objectClass, static::$reflectionCache) &&
+            array_key_exists($index, static::$reflectionCache[$objectClass])
+        ) {
             $propertyTypes = static::$reflectionCache[$objectClass][$index];
         } else {
             $propertyTypes = static::$PropertyInfoExtractor->getTypes($objectClass, $index);
@@ -210,12 +177,7 @@ abstract class AbstractModel implements ModelInterface
         return $propertyTypes;
     }
 
-    /**
-     * @param $theProperty
-     *
-     * @return mixed|ModelInterface
-     */
-    protected function getProperty($theProperty)
+    protected function getProperty($theProperty): mixed
     {
         $arrayCopy = null;
 

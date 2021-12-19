@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractModelTest extends TestCase
 {
-
     public function testExchangeArray()
     {
         $TestModel = new AnotherTestModel(['namespace' => 'another']);
@@ -51,7 +50,6 @@ class AbstractModelTest extends TestCase
         $data         = $TestRawModel->getArrayCopy();
         $this->assertArrayHasKey('foo', $data);
         $this->assertEquals('bar', $data['foo']);
-
     }
 
     public function testIsRawObject()
@@ -63,10 +61,12 @@ class AbstractModelTest extends TestCase
     public function testToJson()
     {
         $TestModel = new TestModel();
-        $this->assertJsonStringEqualsJsonString(json_encode([
+        $this->assertJsonStringEqualsJsonString(
+            json_encode([
             'namespace'        => 'test-namespace',
             '$underscoredName' => 'test'
-        ]),
-            $TestModel->toJson());
+            ]),
+            $TestModel->toJson()
+        );
     }
 }

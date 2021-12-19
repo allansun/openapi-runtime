@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class Allow404ResponseStatusHandlerTest extends TestCase
 {
-
     public function test__invoke()
     {
         $handler = new Allow404ResponseStatusHandler();

@@ -91,10 +91,11 @@ class ResponseHandlerStackTest extends TestCase
 
     public function testHandleShouldFail()
     {
+        $this->expectException(UndefinedResponseException::class);
+
         $stack = new ResponseHandlerStack();
         $stack->add(new InvalidResponseHandler(), 0);
-        $this->expectException(UndefinedResponseException::class);
-        $this->assertInstanceOf(TestModel::class, $stack->handle(new Response(), 'test'));
+        $stack->handle(new Response(), 'test');
     }
 
     public function testKey()

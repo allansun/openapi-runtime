@@ -3,8 +3,11 @@
 namespace OpenAPI\Runtime\Tests;
 
 use GuzzleHttp\Psr7\Response;
+use OpenAPI\Runtime\ResponseHandler\Exception\InvalidResponseHandlerStackException;
+use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\JsonResponseHandler;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack;
+use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStackInterface;
 use OpenAPI\Runtime\Tests\Fixtures\DummyResponseTypes;
 use OpenAPI\Runtime\Tests\Fixtures\TestAPI;
 use OpenAPI\Runtime\Tests\Fixtures\TestModel;
@@ -24,7 +27,7 @@ class AbstractAPITest extends TestCase
     public function testSetResponseHandlerStack()
     {
         $api = new TestAPI();
-        $this->assertInstanceOf(ResponseHandlerStack::class, $api::getResponseHandlerStack());
+        $this->assertInstanceOf(ResponseHandlerStackInterface::class, $api::getResponseHandlerStack());
     }
 
     public function testRequest()
@@ -33,11 +36,9 @@ class AbstractAPITest extends TestCase
         $this->assertInstanceOf(TestModel::class, $model);
     }
 
-    /**
-     * @depends testRequest
-     */
     public function testRequestWithSimpleQuery()
     {
+        $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
         $client->sendRequest(Argument::that(function ($request) {
             /** @var RequestInterface $request */
@@ -49,11 +50,9 @@ class AbstractAPITest extends TestCase
     }
 
 
-    /**
-     * @depends testRequest
-     */
     public function testRequestWithArrayQuery()
     {
+        $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
         $client->sendRequest(Argument::that(function ($request) {
             /** @var RequestInterface $request */
@@ -66,6 +65,7 @@ class AbstractAPITest extends TestCase
 
     public function testRequestWithBody()
     {
+        $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
         $client->sendRequest(Argument::that(function ($request) {
             /** @var RequestInterface $request */
@@ -78,6 +78,7 @@ class AbstractAPITest extends TestCase
 
     public function testRequestWithHeaders()
     {
+        $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
         $client->sendRequest(Argument::that(function ($request) {
             /** @var RequestInterface $request */
@@ -86,6 +87,18 @@ class AbstractAPITest extends TestCase
 
         $api = new TestAPI($client->reveal());
         $api->request('testApiGetById', 'GET', '/test', null, [], ['test' => 'a']);
+    }
+
+    public function testWithInvalidResponseHanlderStackClass()
+    {
+        $this->expectException(InvalidResponseHandlerStackException::class);
+        $this->expectExceptionMessageMatches('/should be compatible with/');
+        $className = uniqid('TestAPI', false);
+        eval('namespace OpenAPI\Runtime; class ' . $className . ' extends AbstractAPI {' .
+             ' protected ?string $responseHandlerStackClass = null; }');
+
+        $className = 'OpenAPI\\Runtime\\' . $className;
+        new $className();
     }
 
     private function getTestAPI(): TestAPI

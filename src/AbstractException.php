@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of OpenApi Runtime.
  *
@@ -10,8 +11,6 @@
 
 namespace OpenAPI\Runtime;
 
-
 abstract class AbstractException extends \Exception
 {
-
 }

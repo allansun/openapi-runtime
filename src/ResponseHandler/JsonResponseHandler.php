@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of OpenApi Runtime.
  *
@@ -10,6 +11,7 @@
 
 namespace OpenAPI\Runtime\ResponseHandler;
 
+use OpenAPI\Runtime\ModelInterface;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandler\Exception\UnparsableException;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +23,7 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
     /**
      * @inheritDoc
      */
-    public function __invoke(ResponseInterface $response, string $operationId)
+    public function __invoke(ResponseInterface $response, string $operationId): ModelInterface|array
     {
         $contents = json_decode((string)$response->getBody(), true);
 
@@ -29,8 +31,10 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
             throw new UnparsableException('Response is not a valid Json');
         }
 
-        if (array_key_exists($operationId, $this->getResponseTypes()::getTypes()) &&
-            array_key_exists($response->getStatusCode() . '.', $this->getResponseTypes()::getTypes()[$operationId])) {
+        if (
+            array_key_exists($operationId, $this->getResponseTypes()::getTypes()) &&
+            array_key_exists($response->getStatusCode() . '.', $this->getResponseTypes()::getTypes()[$operationId])
+        ) {
             $className = $this->getResponseTypes()::getTypes()[$operationId][$response->getStatusCode() . '.'];
             if ($className != rtrim($className, '[]')) {
                 $className = rtrim($className, '[]');
@@ -47,5 +51,4 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
 
         throw new UndefinedResponseException($operationId, $response->getStatusCode());
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of OpenApi Runtime.
  *
@@ -27,4 +28,3 @@ class ResponseTypes implements ResponseTypesInterface
         static::$types = $types;
     }
 }
-

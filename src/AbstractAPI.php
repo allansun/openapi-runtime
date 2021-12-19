@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of OpenApi Runtime.
  *
@@ -12,6 +13,7 @@ namespace OpenAPI\Runtime;
 
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
+use OpenAPI\Runtime\ResponseHandler\Exception\InvalidResponseHandlerStackException;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStackInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -22,7 +24,8 @@ use Psr\Http\Message\UriInterface;
 
 abstract class AbstractAPI implements APIInterface
 {
-    protected static ResponseHandlerStackInterface|string $responseHandlerStack;
+    protected static ResponseHandlerStackInterface $responseHandlerStack;
+    protected ?string $responseHandlerStackClass = null;
 
     protected ClientInterface $client;
     protected UriFactoryInterface $uriFactory;
@@ -40,6 +43,11 @@ abstract class AbstractAPI implements APIInterface
         $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();
         $this->streamFactory  = Psr17FactoryDiscovery::findStreamFactory();
 
+        if (!is_a($this->responseHandlerStackClass, ResponseHandlerStackInterface::class, true)) {
+            throw new InvalidResponseHandlerStackException();
+        } else {
+            self::$responseHandlerStack = new $this->responseHandlerStackClass();
+        }
     }
 
     /**
@@ -47,10 +55,6 @@ abstract class AbstractAPI implements APIInterface
      */
     public static function getResponseHandlerStack(): ResponseHandlerStackInterface
     {
-        if (!isset(self::$responseHandlerStack)) {
-            self::$responseHandlerStack = new static::$responseHandlerStack();
-        }
-
         return self::$responseHandlerStack;
     }
 

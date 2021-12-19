@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class SimpleResponseHandlerStackTest extends TestCase
 {
-
     public function test__construct()
     {
         ResponseTypes::setTypes(['a' => 'b']);

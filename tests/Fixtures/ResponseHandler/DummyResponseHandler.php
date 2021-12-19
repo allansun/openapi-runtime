@@ -8,11 +8,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class DummyResponseHandler implements ResponseHandlerInterface
 {
-
     /**
      * @inheritDoc
      */
-    public function __invoke(ResponseInterface $response, string $operationId)
+    public function __invoke(ResponseInterface $response, string $operationId): TestModel
     {
         return new TestModel();
     }

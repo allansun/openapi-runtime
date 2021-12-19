@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseTypesTest extends TestCase
 {
-
     public function testDummyResponseTypes()
     {
         $this->assertArrayHasKey('a', DummyResponseTypes::getTypes());

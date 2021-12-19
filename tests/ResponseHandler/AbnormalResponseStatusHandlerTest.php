@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class AbnormalResponseStatusHandlerTest extends TestCase
 {
-
     public function test__invoke()
     {
         $handler = new AbnormalResponseStatusHandler();

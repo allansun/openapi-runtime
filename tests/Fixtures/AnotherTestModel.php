@@ -1,8 +1,6 @@
 <?php
 
-
 namespace OpenAPI\Runtime\Tests\Fixtures;
-
 
 use OpenAPI\Runtime\AbstractModel;
 
