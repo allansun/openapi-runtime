@@ -12,9 +12,11 @@ class GenericResponseHandler implements ResponseHandlerInterface, ResponseTypesI
 
     public function __invoke(ResponseInterface $response, string $operationId): GenericResponse
     {
+        $responseTypes = $this->getResponseTypes()::getTypes();
         if (
-            array_key_exists($operationId, $this->getResponseTypes()::getTypes()) &&
-            array_key_exists($response->getStatusCode() . '.', $this->getResponseTypes()::getTypes()[$operationId])
+            array_key_exists($operationId, $responseTypes) &&
+            array_key_exists($response->getStatusCode() . '.', $responseTypes[$operationId]) &&
+            GenericResponse::class == $responseTypes[$operationId][$response->getStatusCode() . '.']
         ) {
             return new GenericResponse([
                 'statusCode' => $response->getStatusCode(),

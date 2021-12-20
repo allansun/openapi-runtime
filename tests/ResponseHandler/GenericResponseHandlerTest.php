@@ -16,7 +16,7 @@ class GenericResponseHandlerTest extends TestCase
         $handler = new GenericResponseHandler();
         ResponseTypes::setTypes([
             'test' => [
-                '200.' => 'ok'
+                '200.' => 'OpenAPI\\Runtime\\GenericResponse'
             ]
         ]);
         $handler->setResponseTypes(new ResponseTypes());
