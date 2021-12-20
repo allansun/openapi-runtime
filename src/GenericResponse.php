@@ -2,17 +2,17 @@
 
 namespace OpenAPI\Runtime;
 
-class AbnormalHttpStatus extends AbstractModel implements AbnormalHttpStatusModelInterface
+class GenericResponse extends AbstractModel implements GenericResponseInterface
 {
     /**
      * @var int|string
      */
-    public $statusCode;
+    public string|int $statusCode;
 
     /**
      * @var string
      */
-    public $contents;
+    public string $contents;
 
     /**
      * @return int

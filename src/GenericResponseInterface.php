@@ -2,7 +2,7 @@
 
 namespace OpenAPI\Runtime;
 
-interface AbnormalHttpStatusModelInterface extends ModelInterface
+interface GenericResponseInterface extends ModelInterface
 {
     public function getStatusCode(): int;
 

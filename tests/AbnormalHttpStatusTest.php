@@ -2,17 +2,17 @@
 
 namespace OpenAPI\Runtime\Tests;
 
-use OpenAPI\Runtime\AbnormalHttpStatus;
-use OpenAPI\Runtime\AbnormalHttpStatusModelInterface;
+use OpenAPI\Runtime\GenericResponse;
+use OpenAPI\Runtime\GenericResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 class AbnormalHttpStatusTest extends TestCase
 {
     public function test__construct(): void
     {
-        $instance = new AbnormalHttpStatus(['statusCode' => '200', 'contents' => '{"success":true}']);
+        $instance = new GenericResponse(['statusCode' => '200', 'contents' => '{"success":true}']);
 
-        $this->assertInstanceOf(AbnormalHttpStatusModelInterface::class, $instance);
+        $this->assertInstanceOf(GenericResponseInterface::class, $instance);
         $this->assertEquals(200, $instance->getStatusCode());
         $this->assertStringContainsStringIgnoringCase('success', $instance->getContents());
     }

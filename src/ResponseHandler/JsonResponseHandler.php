@@ -23,7 +23,7 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
     /** @psalm-suppress MoreSpecificReturnType */
     public function __invoke(ResponseInterface $response, string $operationId): ModelInterface|array
     {
-        $contents = json_decode((string)$response->getBody(), true);
+        $contents = json_decode($response->getBody()->getContents(), true);
 
         if (!is_array($contents)) {
             throw new UnparsableException('Response is not a valid Json');

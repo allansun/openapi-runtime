@@ -3,8 +3,8 @@
 namespace OpenAPI\Runtime\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use OpenAPI\Runtime\AbnormalHttpStatusModelInterface;
-use OpenAPI\Runtime\ResponseHandler\AbnormalResponseStatusHandler;
+use OpenAPI\Runtime\GenericResponseInterface;
+use OpenAPI\Runtime\ResponseHandler\UnexpectedResponseHandler;
 use OpenAPI\Runtime\ResponseHandler\Allow404ResponseStatusHandler;
 use OpenAPI\Runtime\ResponseHandler\Exception\UndefinedResponseException;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack;
@@ -82,7 +82,7 @@ class ResponseHandlerStackTest extends TestCase
      */
     public function testMultipleHandler(ResponseHandlerStack $stack): void
     {
-        $stack->add(new AbnormalResponseStatusHandler());
+        $stack->add(new UnexpectedResponseHandler());
         $stack->add(new Allow404ResponseStatusHandler());
         ResponseTypes::setTypes([
             'test' => [
@@ -90,7 +90,7 @@ class ResponseHandlerStackTest extends TestCase
             ]
         ]);
 
-        $this->assertInstanceOf(AbnormalHttpStatusModelInterface::class, $stack->handle(new Response(500), 'test'));
+        $this->assertInstanceOf(GenericResponseInterface::class, $stack->handle(new Response(500), 'test'));
         $this->assertEquals(null, $stack->handle(new Response(404), 'test'));
     }
 
