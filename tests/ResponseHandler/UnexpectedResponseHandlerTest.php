@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UnexpectedResponseHandlerTest extends TestCase
 {
-    public function testNormal()
+    public function testNormal(): void
     {
         $handler  = new UnexpectedResponseHandler();
         $response = new Response(200, [], 'test');

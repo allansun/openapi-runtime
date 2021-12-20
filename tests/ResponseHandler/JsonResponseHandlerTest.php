@@ -78,7 +78,6 @@ class JsonResponseHandlerTest extends TestCase
     {
         $handler = new JsonResponseHandler();
         $handler->setResponseTypes(new ResponseTypes());
-        $this->assertIsCallable($handler);
         $this->assertInstanceOf(ResponseTypes::class, $handler->getResponseTypes());
     }
 

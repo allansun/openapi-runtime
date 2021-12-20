@@ -61,8 +61,9 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         $this->rewind();
         while ($handler = $this->current()) {
             try {
+                /** @var callable $handler */
                 $result = $handler($response, $operationId);
-            } /** @noinspection PhpRedundantCatchClauseInspection */ catch (ResponseHandlerThrowable $e) {
+            } catch (ResponseHandlerThrowable $e) {
             }
             $this->next();
         }
@@ -104,6 +105,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
     public function remove(string $handlerClass): bool
     {
         while ($handler = $this->current()) {
+            /** @var ResponseHandlerInterface $handler */
             if ($handlerClass === get_class($handler)) {
                 unset($this->handlers[$this->key()]);
 

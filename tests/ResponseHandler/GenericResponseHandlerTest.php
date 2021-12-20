@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class GenericResponseHandlerTest extends TestCase
 {
-    public function testNormal()
+    public function testNormal(): void
     {
         $handler = new GenericResponseHandler();
         ResponseTypes::setTypes([
@@ -29,7 +29,7 @@ class GenericResponseHandlerTest extends TestCase
         $this->assertEquals('test', $result->getContents());
     }
 
-    public function testExceptionThrown()
+    public function testExceptionThrown(): void
     {
         $handler = new GenericResponseHandler();
         ResponseTypes::setTypes([

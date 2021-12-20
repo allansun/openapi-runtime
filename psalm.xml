@@ -14,6 +14,27 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
+        <RedundantPropertyInitializationCheck>
+            <errorLevel type="suppress">
+                <file name="src/AbstractModel.php"/>
+            </errorLevel>
+        </RedundantPropertyInitializationCheck>
         <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <ArgumentTypeCoercion>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </ArgumentTypeCoercion>
+        <TooManyArguments>
+            <errorLevel type="suppress">
+                <referencedFunction name="Prophecy\Prophecy\MethodProphecy::willReturn"/>
+                <directory name="tests"/>
+            </errorLevel>
+        </TooManyArguments>
+        <NonInvariantDocblockPropertyType>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </NonInvariantDocblockPropertyType>
     </issueHandlers>
 </psalm>

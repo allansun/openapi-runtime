@@ -40,10 +40,9 @@ class AbstractAPITest extends TestCase
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
-        $client->sendRequest(Argument::that(function ($request) {
-            /** @var RequestInterface $request */
+        $client->sendRequest(Argument::that(function (RequestInterface $request) {
             return 'a=b' == $request->getUri()->getQuery();
-        }))->willReturn(new Response('200', [], (new TestModel())->toJson()))->shouldBeCalled();
+        }))->willReturn(new Response(200, [], (new TestModel())->toJson()))->shouldBeCalled();
 
         $api = new TestAPI($client->reveal());
         $api->request('testApiGetById', 'GET', '/test', null, ['a' => 'b']);
@@ -54,10 +53,9 @@ class AbstractAPITest extends TestCase
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
-        $client->sendRequest(Argument::that(function ($request) {
-            /** @var RequestInterface $request */
+        $client->sendRequest(Argument::that(function (RequestInterface $request) {
             return 'a%5B%5D=1&a%5B%5D=2' == $request->getUri()->getQuery();
-        }))->willReturn(new Response('200', [], (new TestModel())->toJson()))->shouldBeCalled();
+        }))->willReturn(new Response(200, [], (new TestModel())->toJson()))->shouldBeCalled();
 
         $api = new TestAPI($client->reveal());
         $api->request('testApiGetById', 'GET', '/test', null, ['a[]' => [1, 2]]);
@@ -67,10 +65,9 @@ class AbstractAPITest extends TestCase
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
-        $client->sendRequest(Argument::that(function ($request) {
-            /** @var RequestInterface $request */
+        $client->sendRequest(Argument::that(function (RequestInterface $request) {
             return json_encode(['test' => 'a']) == $request->getBody()->getContents();
-        }))->willReturn(new Response('200', [], (new TestModel())->toJson()))->shouldBeCalled();
+        }))->willReturn(new Response(200, [], (new TestModel())->toJson()))->shouldBeCalled();
 
         $api = new TestAPI($client->reveal());
         $api->request('testApiGetById', 'GET', '/test', ['test' => 'a']);
@@ -80,10 +77,9 @@ class AbstractAPITest extends TestCase
     {
         $this->expectException(UndefinedResponseException::class);
         $client = $this->prophesize(ClientInterface::class);
-        $client->sendRequest(Argument::that(function ($request) {
-            /** @var RequestInterface $request */
+        $client->sendRequest(Argument::that(function (RequestInterface $request) {
             return ['a'] == $request->getHeader('test');
-        }))->willReturn(new Response('200', [], (new TestModel())->toJson()))->shouldBeCalled();
+        }))->willReturn(new Response(200, [], (new TestModel())->toJson()))->shouldBeCalled();
 
         $api = new TestAPI($client->reveal());
         $api->request('testApiGetById', 'GET', '/test', null, [], ['test' => 'a']);

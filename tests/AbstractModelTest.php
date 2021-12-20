@@ -39,7 +39,7 @@ class AbstractModelTest extends TestCase
 
         $this->assertInstanceOf(TestRawModel::class, $TestModel->status);
 
-        $this->assertIsArray($TestModel->metadata);
+        $this->assertIsArray($data['metadata']);
         $TestRawModel = $TestModel->metadata[0];
         $this->assertInstanceOf(AnotherTestModel::class, $TestRawModel);
     }
