@@ -25,7 +25,7 @@ use Psr\Http\Message\UriInterface;
 abstract class AbstractAPI implements APIInterface
 {
     protected static ResponseHandlerStackInterface $responseHandlerStack;
-    protected ?string $responseHandlerStackClass = null;
+    protected string $responseHandlerStackClass = null;
 
     protected ClientInterface $client;
     protected UriFactoryInterface $uriFactory;
