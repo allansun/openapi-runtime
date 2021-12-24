@@ -31,9 +31,15 @@ abstract class AbstractModel implements ModelInterface
      * TRUE means this object is a simple object contains one basic value, such as intger, string, datetime
      */
     protected bool $isRawObject = false;
-    protected mixed $rawData;
+    /**
+     * @var mixed
+     */
+    protected $rawData;
 
-    public function __construct(mixed $data = null)
+    /**
+     * @param  mixed  $data
+     */
+    public function __construct($data = null)
     {
         if (!isset(static::$PropertyInfoExtractor)) {
             static::$PropertyInfoExtractor = $this->initializePropertyInfoExtractor();
@@ -47,9 +53,11 @@ abstract class AbstractModel implements ModelInterface
     }
 
     /**
+     * @param  mixed  $data
+     *
      * @return static
      */
-    public function exchangeArray(mixed $data): ModelInterface
+    public function exchangeArray($data): ModelInterface
     {
         if ($this->isRawObject) {
             $this->rawData = $data;
@@ -102,7 +110,13 @@ abstract class AbstractModel implements ModelInterface
         return \json_encode($this->getArrayCopy());
     }
 
-    protected function parseProperty(string $index, mixed $value): static
+    /**
+     * @param  string  $index
+     * @param  mixed   $value
+     *
+     * @return ModelInterface
+     */
+    protected function parseProperty(string $index, $value): ModelInterface
     {
         $propertyTypes = $this->getPropertyTypes($this, $index);
 
@@ -169,7 +183,12 @@ abstract class AbstractModel implements ModelInterface
         return $propertyTypes;
     }
 
-    protected function getProperty(mixed $theProperty): mixed
+    /**
+     * @param mixed $theProperty
+     *
+     * @return mixed
+     */
+    protected function getProperty($theProperty)
     {
         $arrayCopy = null;
 

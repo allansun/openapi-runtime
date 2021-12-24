@@ -10,7 +10,12 @@ class TestAPI extends AbstractAPI
 {
     protected string $responseHandlerStackClass = ResponseHandlerStack::class;
 
-    public function getById(int $id): array|ModelInterface|null
+    /**
+     * @param  int  $id
+     *
+     * @return array|ModelInterface|null
+     */
+    public function getById(int $id)
     {
         return $this->request('testApiGetById', 'GET', '/test');
     }

@@ -15,6 +15,7 @@ use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use OpenAPI\Runtime\ResponseHandler\Exception\InvalidResponseHandlerStackException;
 use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStackInterface;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -66,15 +67,27 @@ abstract class AbstractAPI implements APIInterface
         self::$responseHandlerStack = $responseHandlerStack;
     }
 
+    /**
+     * @param  string                             $operationId
+     * @param  string                             $method
+     * @param  UriInterface|string                $uri
+     * @param  StreamInterface|array|string|null  $body
+     * @param  array                              $queries
+     * @param  array                              $headers
+     * @param  string                             $protocol
+     *
+     * @return array|ModelInterface|null
+     * @throws ClientExceptionInterface
+     */
     public function request(
         string $operationId,
         string $method,
-        UriInterface|string $uri,
-        StreamInterface|array|string $body = null,
+        $uri,
+        $body = null,
         array $queries = [],
         array $headers = [],
         string $protocol = '1.1'
-    ): array|ModelInterface|null {
+    ) {
         if (!$uri instanceof UriInterface) {
             $queryStrings = [];
             foreach ($queries as $key => $value) {

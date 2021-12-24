@@ -13,7 +13,12 @@ namespace OpenAPI\Runtime;
 
 interface ModelInterface
 {
-    public function exchangeArray(mixed $data): ModelInterface;
+    /**
+     * @param mixed $data
+     *
+     * @return ModelInterface
+     */
+    public function exchangeArray($data): ModelInterface;
 
     public function getArrayCopy(): array;
 

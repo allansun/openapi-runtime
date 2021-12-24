@@ -6,7 +6,11 @@ use OpenAPI\Runtime\AbstractException;
 
 class UndefinedResponseException extends AbstractException implements ResponseHandlerThrowable
 {
-    public function __construct(string $operationId, string|int $statusCode)
+    /**
+     * @param  string      $operationId
+     * @param  string|int  $statusCode
+     */
+    public function __construct(string $operationId, $statusCode)
     {
         parent::__construct(sprintf(
             "Operation '%s' dose not have a defined response when status code is %s",

@@ -7,9 +7,14 @@ use Psr\Http\Message\ResponseInterface;
 
 interface ResponseHandlerInterface
 {
-    /** @psalm-suppress LessSpecificReturnType */
+    /**
+     * @param  ResponseInterface  $response
+     * @param  string             $operationId
+     *
+     * @return array|ModelInterface|null
+     */
     public function __invoke(
         ResponseInterface $response,
         string $operationId
-    ): array|ModelInterface|null;
+    );
 }

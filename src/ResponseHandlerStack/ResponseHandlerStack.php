@@ -54,7 +54,7 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
      *
      * @psalm-return ModelInterface|array<ModelInterface>|null
      */
-    public function handle(ResponseInterface $response, string $operationId): array|ModelInterface|null
+    public function handle(ResponseInterface $response, string $operationId)
     {
         $result = false;
 
@@ -75,7 +75,10 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
         }
     }
 
-    public function current(): ResponseHandlerInterface|bool
+    /**
+     * @return ResponseHandlerInterface|bool
+     */
+    public function current()
     {
         return current($this->handlers);
     }

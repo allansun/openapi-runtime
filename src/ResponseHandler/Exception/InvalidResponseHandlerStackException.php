@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpPureAttributeCanBeAddedInspection */
-
 namespace OpenAPI\Runtime\ResponseHandler\Exception;
 
 use OpenAPI\Runtime\AbstractException;

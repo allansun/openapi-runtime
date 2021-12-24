@@ -7,7 +7,7 @@ class GenericResponse extends AbstractModel implements GenericResponseInterface
     /**
      * @var int|string
      */
-    public string|int $statusCode;
+    public $statusCode;
 
     /**
      * @var string

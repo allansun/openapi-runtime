@@ -16,5 +16,11 @@ use Psr\Http\Message\ResponseInterface;
 
 interface ResponseHandlerStackInterface
 {
-    public function handle(ResponseInterface $response, string $operationId): array|ModelInterface|null;
+    /**
+     * @param  ResponseInterface  $response
+     * @param  string             $operationId
+     *
+     * @return array|ModelInterface|null
+     */
+    public function handle(ResponseInterface $response, string $operationId);
 }
