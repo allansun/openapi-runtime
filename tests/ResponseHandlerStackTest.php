@@ -29,11 +29,6 @@ class ResponseHandlerStackTest extends TestCase
         return ['default' => [$stack]];
     }
 
-    public function setUp(): void
-    {
-        ResponseTypes::setTypes([]);
-    }
-
     /**
      * @dataProvider initStack
      *
@@ -66,12 +61,6 @@ class ResponseHandlerStackTest extends TestCase
      */
     public function testHandle(ResponseHandlerStack $stack): void
     {
-        ResponseTypes::setTypes([
-            'test' => [
-                '200.' => TestModel::class
-            ]
-        ]);
-
         $this->assertInstanceOf(TestModel::class, $stack->handle(new Response(), 'test'));
     }
 
@@ -84,11 +73,6 @@ class ResponseHandlerStackTest extends TestCase
     {
         $stack->add(new UnexpectedResponseHandler());
         $stack->add(new Allow404ResponseStatusHandler());
-        ResponseTypes::setTypes([
-            'test' => [
-                '200.' => '{success:false}'
-            ]
-        ]);
 
         $this->assertInstanceOf(GenericResponseInterface::class, $stack->handle(new Response(500), 'test'));
         $this->assertEquals(null, $stack->handle(new Response(404), 'test'));

@@ -91,7 +91,7 @@ class AbstractAPITest extends TestCase
         $this->expectExceptionMessageMatches('/should be compatible with/');
         $className = uniqid('TestAPI', false);
         eval('namespace OpenAPI\Runtime; class ' . $className . ' extends AbstractAPI {' .
-             ' protected ?string $responseHandlerStackClass = null; }');
+             ' protected string $responseHandlerStackClass = "abc"; }');
 
         $className = 'OpenAPI\\Runtime\\' . $className;
         new $className();

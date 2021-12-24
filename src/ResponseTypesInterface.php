@@ -13,7 +13,7 @@ namespace OpenAPI\Runtime;
 
 interface ResponseTypesInterface
 {
-    public static function getTypes(): array;
+    public function getTypes(): array;
 
-    public static function setTypes(array $types): void;
+    public function setTypes(array $types): void;
 }

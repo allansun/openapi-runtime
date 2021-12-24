@@ -8,7 +8,7 @@ use OpenAPI\Runtime\ResponseHandlerStack\ResponseHandlerStack;
 
 class TestAPI extends AbstractAPI
 {
-    protected ?string $responseHandlerStackClass = ResponseHandlerStack::class;
+    protected string $responseHandlerStackClass = ResponseHandlerStack::class;
 
     public function getById(int $id): array|ModelInterface|null
     {

@@ -9,7 +9,6 @@ use OpenAPI\Runtime\ResponseHandler\JsonResponseHandler;
 use OpenAPI\Runtime\ResponseTypes;
 use OpenAPI\Runtime\Tests\Fixtures\TestModel;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpClient\Response\MockResponse;
 
 class JsonResponseHandlerTest extends TestCase
 {
@@ -31,12 +30,14 @@ class JsonResponseHandlerTest extends TestCase
 
     public function testInvokeWithNormalResponse(): void
     {
-        ResponseTypes::setTypes([
+        $responseTypes = new ResponseTypes();
+        $responseTypes->setTypes([
             'test' => [
                 '200.' => TestModel::class
             ]
         ]);
         $handler = new JsonResponseHandler();
+        $handler->setResponseTypes($responseTypes);
 
         $response = $handler(new Response(200, [], '{"namespace":"aaa"}'), 'test');
 
@@ -47,24 +48,29 @@ class JsonResponseHandlerTest extends TestCase
     {
         $this->expectException(UndefinedResponseException::class);
         $this->expectExceptionMessageMatches('/.*401.*/');
-        ResponseTypes::setTypes([
+
+        $responseTypes = new ResponseTypes();
+        $responseTypes->setTypes([
             'test' => [
                 '200.' => TestModel::class
             ]
         ]);
         $handler = new JsonResponseHandler();
+        $handler->setResponseTypes($responseTypes);
 
         $handler(new Response(401, [], '{"namespace":"aaa"}'), 'test');
     }
 
     public function testInvokeWithArrayResponses(): void
     {
-        ResponseTypes::setTypes([
+        $responseTypes = new ResponseTypes();
+        $responseTypes->setTypes([
             'test' => [
                 '200.' => TestModel::class . '[]'
             ]
         ]);
         $handler = new JsonResponseHandler();
+        $handler->setResponseTypes($responseTypes);
 
         $responses = $handler(new Response(200, [], '[{"namespace":"aaa"},{"namespace":"bbb"}]'), 'test');
 
@@ -81,9 +87,4 @@ class JsonResponseHandlerTest extends TestCase
         $this->assertInstanceOf(ResponseTypes::class, $handler->getResponseTypes());
     }
 
-    protected function setUp(): void
-    {
-        // reset ResponseTypes
-        ResponseTypes::setTypes([]);
-    }
 }

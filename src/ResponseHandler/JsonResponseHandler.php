@@ -30,10 +30,10 @@ class JsonResponseHandler implements ResponseHandlerInterface, ResponseTypesInje
         }
 
         if (
-            array_key_exists($operationId, $this->getResponseTypes()::getTypes()) &&
-            array_key_exists($response->getStatusCode() . '.', $this->getResponseTypes()::getTypes()[$operationId])
+            array_key_exists($operationId, $this->getResponseTypes()->getTypes()) &&
+            array_key_exists($response->getStatusCode() . '.', $this->getResponseTypes()->getTypes()[$operationId])
         ) {
-            $className = $this->getResponseTypes()::getTypes()[$operationId][$response->getStatusCode() . '.'];
+            $className = $this->getResponseTypes()->getTypes()[$operationId][$response->getStatusCode() . '.'];
             if ($className != rtrim($className, '[]')) {
                 $className = rtrim($className, '[]');
                 $results   = [];

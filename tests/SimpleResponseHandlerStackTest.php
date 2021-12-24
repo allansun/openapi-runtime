@@ -9,15 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 class SimpleResponseHandlerStackTest extends TestCase
 {
-    public function test__construct(): void
+    public function testConstruct(): void
     {
-        ResponseTypes::setTypes(['a' => 'b']);
+        $responseTypes = new ResponseTypes();
+        $responseTypes->setTypes(['a' => 'b']);
 
-        $stack = new JsonResponseHandlerStack(new ResponseTypes());
+        $stack = new JsonResponseHandlerStack($responseTypes);
 
         /** @var JsonResponseHandler $handler */
         $handler = $stack->current();
 
-        $this->assertEquals('b', $handler->getResponseTypes()::getTypes()['a']);
+        $this->assertEquals('b', $handler->getResponseTypes()->getTypes()['a']);
     }
 }

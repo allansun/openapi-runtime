@@ -16,15 +16,15 @@ class ResponseTypes implements ResponseTypesInterface
     /**
      * @var array
      */
-    protected static array $types = [];
+    protected array $types = [];
 
-    public static function getTypes(): array
+    public function getTypes(): array
     {
-        return static::$types;
+        return $this->types;
     }
 
-    public static function setTypes(array $types): void
+    public function setTypes(array $types): void
     {
-        static::$types = $types;
+        $this->types = $types;
     }
 }

@@ -13,13 +13,14 @@ class GenericResponseHandlerTest extends TestCase
 {
     public function testNormal(): void
     {
-        $handler = new GenericResponseHandler();
-        ResponseTypes::setTypes([
+        $handler       = new GenericResponseHandler();
+        $responseTypes = new ResponseTypes();
+        $responseTypes->setTypes([
             'test' => [
                 '200.' => 'OpenAPI\\Runtime\\GenericResponse'
             ]
         ]);
-        $handler->setResponseTypes(new ResponseTypes());
+        $handler->setResponseTypes($responseTypes);
 
         $response = new Response(200, [], 'test');
         $result   = $handler($response, 'test');
@@ -31,13 +32,14 @@ class GenericResponseHandlerTest extends TestCase
 
     public function testExceptionThrown(): void
     {
-        $handler = new GenericResponseHandler();
-        ResponseTypes::setTypes([
+        $handler       = new GenericResponseHandler();
+        $responseTypes = new ResponseTypes();
+        $responseTypes->setTypes([
             'test' => [
                 '200.' => 'ok'
             ]
         ]);
-        $handler->setResponseTypes(new ResponseTypes());
+        $handler->setResponseTypes($responseTypes);
 
         $this->expectException(UndefinedResponseException::class);
 
