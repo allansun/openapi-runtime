@@ -25,7 +25,7 @@ use Psr\Http\Message\UriInterface;
 
 abstract class AbstractAPI implements APIInterface
 {
-    protected static ResponseHandlerStackInterface $responseHandlerStack;
+    protected ResponseHandlerStackInterface $responseHandlerStack;
     protected string $responseHandlerStackClass;
 
     protected ClientInterface $client;
@@ -47,24 +47,24 @@ abstract class AbstractAPI implements APIInterface
         if (!is_a($this->responseHandlerStackClass, ResponseHandlerStackInterface::class, true)) {
             throw new InvalidResponseHandlerStackException();
         } else {
-            self::$responseHandlerStack = new $this->responseHandlerStackClass();
+            $this->responseHandlerStack = new $this->responseHandlerStackClass();
         }
     }
 
     /**
      * @return ResponseHandlerStackInterface
      */
-    public static function getResponseHandlerStack(): ResponseHandlerStackInterface
+    public function getResponseHandlerStack(): ResponseHandlerStackInterface
     {
-        return self::$responseHandlerStack;
+        return $this->responseHandlerStack;
     }
 
     /**
      * @param  ResponseHandlerStackInterface  $responseHandlerStack
      */
-    public static function setResponseHandlerStack(ResponseHandlerStackInterface $responseHandlerStack): void
+    public function setResponseHandlerStack(ResponseHandlerStackInterface $responseHandlerStack): void
     {
-        self::$responseHandlerStack = $responseHandlerStack;
+        $this->responseHandlerStack = $responseHandlerStack;
     }
 
     /**
@@ -120,7 +120,7 @@ abstract class AbstractAPI implements APIInterface
             $request = $request->withHeader($name, $value);
         }
 
-        return static::getResponseHandlerStack()->handle(
+        return $this->getResponseHandlerStack()->handle(
             $this->client->sendRequest($request),
             $operationId
         );
