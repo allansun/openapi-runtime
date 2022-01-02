@@ -133,14 +133,32 @@ abstract class AbstractModel implements ModelInterface
             foreach ($propertyTypes as $PropertyType) {
                 if ($PropertyType->isCollection()) {
                     $values = [];
-                    if (true == ($className = $PropertyType->getCollectionValueType()->getClassName())) {
-                        foreach ((array)$value as $valueItem) {
-                            /** @var ModelInterface $propertyValue */
-                            $PropertyValue = new $className($valueItem);
-                            if ($PropertyValue instanceof ModelInterface && !$PropertyValue->isRawObject()) {
-                                $values[] = $PropertyValue;
-                            } else {
-                                $values[] = $valueItem;
+                    // symfony/property-info < v6
+                    if (method_exists($PropertyType, 'getCollectionValueType')) {
+                        if (true == ($className = $PropertyType->getCollectionValueType()->getClassName())) {
+                            foreach ((array)$value as $valueItem) {
+                                /** @var ModelInterface $propertyValue */
+                                $PropertyValue = new $className($valueItem);
+                                if ($PropertyValue instanceof ModelInterface && !$PropertyValue->isRawObject()) {
+                                    $values[] = $PropertyValue;
+                                } else {
+                                    $values[] = $valueItem;
+                                }
+                            }
+                        }
+                    }
+
+                    // symfony/property-info >= v6
+                    if (method_exists($PropertyType, 'getCollectionValueTypes')) {
+                        if (true == ($className = $PropertyType->getCollectionValueTypes()[0]->getClassName())) {
+                            foreach ((array)$value as $valueItem) {
+                                /** @var ModelInterface $propertyValue */
+                                $PropertyValue = new $className($valueItem);
+                                if ($PropertyValue instanceof ModelInterface && !$PropertyValue->isRawObject()) {
+                                    $values[] = $PropertyValue;
+                                } else {
+                                    $values[] = $valueItem;
+                                }
                             }
                         }
                     }
@@ -184,7 +202,7 @@ abstract class AbstractModel implements ModelInterface
     }
 
     /**
-     * @param mixed $theProperty
+     * @param  mixed  $theProperty
      *
      * @return mixed
      */

@@ -25,7 +25,7 @@
         "psr/http-factory": "^1.0",
         "psr/http-message": "^1.0",
         "psr/log": "1.*|2.*|3.*",
-        "symfony/property-info": "^4|^5"
+        "symfony/property-info": "^4|^5|^6"
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.4",
@@ -34,8 +34,8 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "~9",
         "squizlabs/php_codesniffer": "^3.6",
-        "symfony/http-client": "^v5|^v6",
-        "vimeo/psalm": "^4.15"
+        "symfony/http-client": "^v4|^v5|^v6",
+        "vimeo/psalm": "^4.17"
     },
     "suggest": {
         "monolog/monolog": "^2",

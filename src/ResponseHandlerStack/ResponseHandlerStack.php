@@ -77,7 +77,9 @@ class ResponseHandlerStack implements \Iterator, ResponseHandlerStackInterface
 
     /**
      * @return ResponseHandlerInterface|bool
+     * @noinspection PhpLanguageLevelInspection
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->handlers);
