@@ -27,7 +27,7 @@ class AbstractAPITest extends TestCase
     public function testSetResponseHandlerStack(): void
     {
         $api = new TestAPI();
-        $this->assertInstanceOf(ResponseHandlerStackInterface::class, $api::getResponseHandlerStack());
+        $this->assertInstanceOf(ResponseHandlerStackInterface::class, $api->getResponseHandlerStack());
     }
 
     public function testRequest(): void
@@ -104,7 +104,7 @@ class AbstractAPITest extends TestCase
 
         $responseHandler = new JsonResponseHandler();
         $responseHandler->setResponseTypes(new DummyResponseTypes());
-        $api::setResponseHandlerStack(new ResponseHandlerStack([$responseHandler]));
+        $api->setResponseHandlerStack(new ResponseHandlerStack([$responseHandler]));
 
         return $api;
     }
