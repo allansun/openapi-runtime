@@ -135,7 +135,8 @@ abstract class AbstractModel implements ModelInterface
                     $values = [];
                     // symfony/property-info < v6
                     if (method_exists($PropertyType, 'getCollectionValueType')) {
-                        if (true == ($className = $PropertyType->getCollectionValueType()->getClassName())) {
+                        // @codeCoverageIgnoreStart
+                        if (($className = $PropertyType->getCollectionValueType()->getClassName())) {
                             foreach ((array)$value as $valueItem) {
                                 /** @var ModelInterface $propertyValue */
                                 $PropertyValue = new $className($valueItem);
@@ -146,11 +147,12 @@ abstract class AbstractModel implements ModelInterface
                                 }
                             }
                         }
+                        // @codeCoverageIgnoreEnd
                     }
 
                     // symfony/property-info >= v6
                     if (method_exists($PropertyType, 'getCollectionValueTypes')) {
-                        if (true == ($className = $PropertyType->getCollectionValueTypes()[0]->getClassName())) {
+                        if (($className = $PropertyType->getCollectionValueTypes()[0]->getClassName())) {
                             foreach ((array)$value as $valueItem) {
                                 /** @var ModelInterface $propertyValue */
                                 $PropertyValue = new $className($valueItem);
