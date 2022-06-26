@@ -23,14 +23,19 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 abstract class AbstractModel implements ModelInterface
 {
     protected static PropertyInfoExtractor $PropertyInfoExtractor;
+
     /**
      * @var array Cache for reflection results
      */
     protected static array $reflectionCache = [];
+
     /**
      * TRUE means this object is a simple object contains one basic value, such as intger, string, datetime
+     *
+     * @var bool
      */
-    protected bool $isRawObject = false;
+    protected $isRawObject = false;
+
     /**
      * @var mixed
      */
